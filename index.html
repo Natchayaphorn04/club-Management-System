@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการชมรมนักศึกษา</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <i class="fas fa-university text-white text-2xl mr-3"></i>
+                    <span class="text-white text-xl font-bold">ระบบจัดการชมรม</span>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <button onclick="showPage('home')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                        <i class="fas fa-home mr-2"></i>หน้าหลัก
+                    </button>
+                    <button onclick="showPage('clubs')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                        <i class="fas fa-users mr-2"></i>รายชื่อชมรม
+                    </button>
+                    <button onclick="showPage('activities')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                        <i class="fas fa-calendar-alt mr-2"></i>กิจกรรม
+                    </button>
+                    <button onclick="showPage('login')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                        <i class="fas fa-sign-in-alt mr-2"></i>เข้าสู่ระบบ
+                    </button>
+                    <button onclick="showPage('register')" class="nav-btn bg-yellow-500 hover:bg-yellow-600 text-gray-800 px-4 py-2 rounded-lg transition-colors font-medium">
+                        <i class="fas fa-user-plus mr-2"></i>สมัครสมาชิก
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page">
+        <!-- Hero Section -->
+        <div class="gradient-bg text-white py-20">
+            <div class="max-w-7xl mx-auto px-4 text-center">
+                <h1 class="text-5xl font-bold mb-6">ค้นหาชมรมที่ใช่สำหรับคุณ</h1>
+                <p class="text-xl mb-8 opacity-90">ใช้ AI ช่วยแนะนำชมรมตามความสนใจของคุณ</p>
+
+                <!-- AI Club Recommendation -->
+                <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8 ai-glow">
+                    <h3 class="text-2xl font-semibold mb-4">🤖 AI แนะนำชมรม</h3>
+                    <div class="flex gap-4">
+                        <input type="text" id="interest-input" placeholder="เช่น: ดนตรี, กีฬา, เทคโนโลยี, ศิลปะ..."
+                            class="flex-1 px-4 py-3 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                        <button onclick="generateClubRecommendations()"
+                                class="bg-yellow-500 hover:bg-yellow-600 px-8 py-3 rounded-lg font-semibold text-gray-800 transition-colors">
+                            <i class="fas fa-magic mr-2"></i>แนะนำ
+                        </button>
+                    </div>
+                    <div id="ai-recommendations" class="mt-6 hidden">
+                        <h4 class="font-semibold mb-3">ชมรมที่แนะนำสำหรับคุณ:</h4>
+                        <div id="recommended-clubs" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Calendar Section -->
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">📅 ปฏิทินกิจกรรม</h2>
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <h3 id="calendar-month" class="text-2xl font-semibold text-gray-800"></h3>
+                    <button onclick="changeMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-2"></div>
+            </div>
+        </div>
+        <!-- Promotional Images -->
+        <div class="max-w-7xl mx-auto px-4 py-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">🎯 โปรโมทชมรม</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card examples (ดนตรี, กีฬา, ศิลปะ) -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Clubs Page -->
+    <div id="clubs-page" class="page hidden">
+        <!-- ... เนื้อหาเหมือนเดิม ... -->
+    </div>
+
+    <!-- Activities Page -->
+    <div id="activities-page" class="page hidden">
+        <!-- ... เนื้อหาเหมือนเดิม ... -->
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page hidden">
+        <!-- ... เนื้อหาเหมือนเดิม ... -->
+    </div>
+
+    <!-- Register Page -->
+    <div id="register-page" class="page hidden">
+        <!-- ... เนื้อหาเหมือนเดิม ... -->
+    </div>
+
+    <!-- Modal for Activity Registration -->
+    <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold mb-4">สมัครกิจกรรม</h3>
+            <div id="modal-content"></div>
+            <div class="flex gap-4 mt-6">
+                <button onclick="closeModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg transition-colors">
+                    ยกเลิก
+                </button>
+                <button onclick="confirmRegistration()" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    ยืนยันการสมัคร
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
