@@ -115,11 +115,11 @@ function renderCalendar() {
     for (let day = 1; day <= daysInMonth; day++) {
         const dayElement = document.createElement('div');
         dayElement.className = 'calendar-day text-center py-2 cursor-pointer rounded-lg relative';
-
+    
         // ตรวจสอบว่ามีกิจกรรมในวันนี้หรือไม่
         const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayActivities = activitiesData.filter(activity => activity.date === dateStr);
-
+    
         if (dayActivities.length > 0) {
             dayElement.classList.add('bg-blue-100', 'text-blue-800', 'font-semibold', 'hover:bg-blue-200');
             dayElement.innerHTML = `
@@ -138,7 +138,7 @@ function renderCalendar() {
         } else {
             dayElement.textContent = day;
         }
-
+    
         calendarGrid.appendChild(dayElement);
     }
 }
@@ -425,15 +425,15 @@ function viewClubDetails(clubId) {
         clubCards.forEach(card => {
             card.classList.remove('ring-4', 'ring-blue-400');
         });
-
+    
         const targetCard = Array.from(clubCards).find(card =>
             card.querySelector('h3').textContent === club.name
         );
-
+    
         if (targetCard) {
             targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
             targetCard.classList.add('ring-4', 'ring-blue-400');
-
+        
             // ลบการเน้นหลังจาก 3 วินาที
             setTimeout(() => {
                 targetCard.classList.remove('ring-4', 'ring-blue-400');
@@ -444,3 +444,266 @@ function viewClubDetails(clubId) {
 
 // เริ่มต้นแอปพลิเคชันเมื่อหน้าโหลดเสร็จ
 document.addEventListener('DOMContentLoaded', init);
+
+// === RECENT ACTIVITIES FUNCTIONS ===
+
+// แสดงกิจกรรมล่าสุด
+function renderRecentActivities() {
+    const container = document.getElementById('recent-activities');
+    
+    // เรียงกิจกรรมตามวันที่ใกล้ที่สุด
+    const sortedActivities = [...activitiesData].sort((a, b) => {
+        return new Date(a.date) - new Date(b.date);
+    });
+    
+    // แสดงเฉพาะกิจกรรม 4 รายการแรก
+    const recentActivities = sortedActivities.slice(0, 4);
+    
+    if (recentActivities.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-8 text-gray-500">
+                <i class="fas fa-calendar-times text-4xl mb-4"></i>
+                <p>ยังไม่มีกิจกรรมที่กำลังจะมาถึง</p>
+            </div>
+        `;
+        return;
+    }
+    
+    container.innerHTML = recentActivities.map((activity, index) => {
+        const daysLeft = getDaysUntilEvent(activity.date);
+        const statusConfig = getActivityStatusConfig(activity.status);
+        const deadlinePassed = new Date(activity.deadline) < new Date();
+        const isUpcoming = daysLeft >= 0 && daysLeft <= 7; // กิจกรรมที่ใกล้จะมาถึงใน 7 วัน
+        
+        return `
+            <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 ${isUpcoming ? 'ring-2 ring-blue-200 bg-blue-50' : ''}">
+                <!-- Header กิจกรรม -->
+                <div class="flex items-start justify-between mb-4">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                                ${index + 1}
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-gray-900 leading-tight">${activity.name}</h4>
+                                <p class="text-sm text-gray-600">${activity.club}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col items-end gap-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.textColor}">
+                            <i class="fas fa-circle mr-1 text-xs"></i>
+                            ${statusConfig.text}
+                        </span>
+                        ${isUpcoming ? `
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                <i class="fas fa-fire mr-1"></i>ใกล้เข้า!
+                            </span>
+                        ` : ''}
+                    </div>
+                </div>
+                
+                <!-- รายละเอียดกิจกรรม -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                    <p class="text-gray-700 text-sm leading-relaxed mb-3">${activity.description}</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                        <div class="space-y-2">
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-calendar-day w-4 text-center mr-3 text-blue-600"></i>
+                                <div>
+                                    <div class="font-medium">วันที่จัด</div>
+                                    <div class="text-gray-900">${formatDate(activity.date)}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-clock w-4 text-center mr-3 text-orange-600"></i>
+                                <div>
+                                    <div class="font-medium">ปิดรับสมัคร</div>
+                                    <div class="text-gray-900">${formatDate(activity.deadline)}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-hourglass-half w-4 text-center mr-3 text-purple-600"></i>
+                                <div>
+                                    <div class="font-medium">เหลือเวลา</div>
+                                    <div class="text-gray-900 font-semibold">
+                                        ${daysLeft === 0 ? '🔥 วันนี้!' : 
+                                        daysLeft === 1 ? '⚡ พรุ่งนี้' : 
+                                        daysLeft > 0 ? `${daysLeft} วัน` : 
+                                        `ผ่านไปแล้ว`}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-users w-4 text-center mr-3 text-green-600"></i>
+                                <div>
+                                    <div class="font-medium">จัดโดย</div>
+                                    <div class="text-gray-900">${activity.club}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex gap-3">
+                    ${activity.status !== 'closed' && !deadlinePassed ? `
+                        <button onclick="openRegistrationModal(${activity.id})" 
+                                class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-lg transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg">
+                            <i class="fas fa-user-plus mr-2"></i>สมัครเข้าร่วม
+                        </button>
+                        <button onclick="showActivityDetails(${activity.id})" 
+                                class="px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-800 rounded-lg transition-all duration-200 font-medium text-sm">
+                            <i class="fas fa-info-circle mr-1"></i>รายละเอียด
+                        </button>
+                    ` : `
+                        <button disabled class="flex-1 bg-gray-300 text-gray-500 py-3 px-4 rounded-lg cursor-not-allowed font-medium text-sm">
+                            <i class="fas fa-lock mr-2"></i>ปิดรับสมัครแล้ว
+                        </button>
+                        <button onclick="showActivityDetails(${activity.id})" 
+                                class="px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-800 rounded-lg transition-all duration-200 font-medium text-sm">
+                            <i class="fas fa-info-circle mr-1"></i>ดูรายละเอียด
+                        </button>
+                    `}
+                </div>
+                
+                <!-- Deadline Warning -->
+                ${!deadlinePassed && daysLeft <= 3 && daysLeft >= 0 ? `
+                    <div class="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                        <div class="flex items-center text-yellow-800">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>
+                            <span class="text-sm font-medium">
+                                ${daysLeft === 0 ? 'วันสุดท้ายในการสมัคร!' :
+                                daysLeft === 1 ? 'เหลือเวลาสมัครอีก 1 วัน' :
+                                `เหลือเวลาสมัครอีก ${daysLeft} วัน`}
+                            </span>
+                        </div>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+}
+
+// อัพเดตสถิติกิจกรรม
+function updateActivitiesStats() {
+    const openCount = activitiesData.filter(a => a.status === 'open').length;
+    const closingCount = activitiesData.filter(a => a.status === 'closing').length;
+    const totalCount = activitiesData.length;
+    
+    document.getElementById('open-count').textContent = openCount;
+    document.getElementById('closing-count').textContent = closingCount;
+    document.getElementById('total-activities').textContent = totalCount;
+}
+
+// คำนวณจำนวนวันจนถึงกิจกรรม
+function getDaysUntilEvent(eventDate) {
+    const today = new Date();
+    const event = new Date(eventDate);
+    const diffTime = event - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+}
+
+// ดึง config สำหรับสถานะกิจกรรม
+function getActivityStatusConfig(status) {
+    const configs = {
+        'open': {
+            text: 'เปิดรับสมัคร',
+            bgColor: 'bg-green-100',
+            textColor: 'text-green-800'
+        },
+        'closing': {
+            text: 'ใกล้ปิดรับ',
+            bgColor: 'bg-orange-100', 
+            textColor: 'text-orange-800'
+        },
+        'closed': {
+            text: 'ปิดรับแล้ว',
+            bgColor: 'bg-gray-100',
+            textColor: 'text-gray-800'
+        }
+    };
+    
+    return configs[status] || configs['closed'];
+}
+
+// แสดงรายละเอียดกิจกรรม
+function showActivityDetails(activityId) {
+    const activity = activitiesData.find(a => a.id === activityId);
+    if (!activity) return;
+    
+    const modal = document.getElementById('registration-modal');
+    const modalContent = document.getElementById('modal-content');
+    
+    modalContent.innerHTML = `
+        <div class="space-y-4">
+            <div class="text-center border-b pb-4">
+                <h4 class="text-xl font-bold text-gray-800">${activity.name}</h4>
+                <p class="text-gray-600 mt-1">${activity.club}</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                    <span class="font-medium text-gray-700">วันที่จัดกิจกรรม:</span>
+                    <div class="text-gray-900">${formatDate(activity.date)}</div>
+                </div>
+                <div>
+                    <span class="font-medium text-gray-700">ปิดรับสมัคร:</span>
+                    <div class="text-gray-900">${formatDate(activity.deadline)}</div>
+                </div>
+                <div>
+                    <span class="font-medium text-gray-700">สถานะ:</span>
+                    <div class="text-gray-900">${getStatusText(activity.status)}</div>
+                </div>
+                <div>
+                    <span class="font-medium text-gray-700">จำนวนวันคงเหลือ:</span>
+                    <div class="text-gray-900">${getDaysUntilEvent(activity.date)} วัน</div>
+                </div>
+            </div>
+            
+            <div>
+                <span class="font-medium text-gray-700">รายละเอียด:</span>
+                <p class="text-gray-900 mt-1">${activity.description}</p>
+            </div>
+            
+            ${activity.status !== 'closed' ? `
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h5 class="font-medium text-blue-900 mb-2">ต้องการสมัครกิจกรรมนี้?</h5>
+                    <p class="text-blue-700 text-sm mb-3">กรอกข้อมูลเพื่อสมัครเข้าร่วมกิจกรรม</p>
+                    <button onclick="closeModal(); setTimeout(() => openRegistrationModal(${activity.id}), 100);" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors">
+                        <i class="fas fa-user-plus mr-2"></i>สมัครเข้าร่วม
+                    </button>
+                </div>
+            ` : `
+                <div class="bg-gray-50 p-4 rounded-lg text-center">
+                    <i class="fas fa-lock text-gray-400 text-2xl mb-2"></i>
+                    <p class="text-gray-600">กิจกรรมนี้ปิดรับสมัครแล้ว</p>
+                </div>
+            `}
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+// เพิ่ม CSS class สำหรับ line-clamp
+const style = document.createElement('style');
+style.textContent = `
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+`;
+document.head.appendChild(style);
