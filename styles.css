@@ -8,7 +8,7 @@ body {
 
 /* Gradient Background */
 .gradient-bg {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 /* Card Hover Effects */
@@ -36,8 +36,8 @@ body {
 }
 
 /* Calendar Day Styles */
-.calendar-day { 
-    transition: all 0.2s ease; 
+.calendar-day {
+    transition: all 0.2s ease;
 }
 
 .calendar-day:hover { 
@@ -46,7 +46,7 @@ body {
 }
 
 /* Activity Badge Animation */
-.activity-badge { 
+.activity-badge {
     animation: pulse 2s infinite; 
 }
 
