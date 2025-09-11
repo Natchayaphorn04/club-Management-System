@@ -46,7 +46,7 @@
             <div class="max-w-7xl mx-auto px-4 text-center">
                 <h1 class="text-5xl font-bold mb-6">ค้นหาชมรมที่ใช่สำหรับคุณ</h1>
                 <p class="text-xl mb-8 opacity-90">ใช้ AI ช่วยแนะนำชมรมตามความสนใจของคุณ</p>
-
+    
                 <!-- AI Club Recommendation -->
                 <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8 ai-glow">
                     <h3 class="text-2xl font-semibold mb-4">🤖 AI แนะนำชมรม</h3>
@@ -65,6 +65,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Calendar Section -->
         <div class="max-w-7xl mx-auto px-4 py-16">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">📅 ปฏิทินกิจกรรม</h2>
@@ -81,34 +82,341 @@
                 <div id="calendar-grid" class="grid grid-cols-7 gap-2"></div>
             </div>
         </div>
+
         <!-- Promotional Images -->
         <div class="max-w-7xl mx-auto px-4 py-16">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">🎯 โปรโมทชมรม</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card examples (ดนตรี, กีฬา, ศิลปะ) -->
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <i class="fas fa-music text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold">ชมรมดนตรี</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">เข้าร่วมกับเราในการสร้างสรรค์เสียงเพลงที่ไพเราะ</p>
+                    </div>
+                </div>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-green-400 to-blue-600 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <i class="fas fa-running text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold">ชมรมกีฬา</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">พัฒนาร่างกายและจิตใจให้แข็งแรงไปด้วยกัน</p>
+                    </div>
+                </div>
+                <div class="card-hover bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <i class="fas fa-palette text-6xl mb-4"></i>
+                            <h3 class="text-2xl font-bold">ชมรมศิลปะ</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-600">แสดงออกความคิดสร้างสรรค์ผ่านงานศิลปะ</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Clubs Page -->
     <div id="clubs-page" class="page hidden">
-        <!-- ... เนื้อหาเหมือนเดิม ... -->
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">รายชื่อชมรม</h1>
+    
+            <!-- Category Filter -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button onclick="filterClubs('all')" class="filter-btn bg-purple-600 text-white px-6 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors">
+                    ทั้งหมด
+                </button>
+                <button onclick="filterClubs('music')" class="filter-btn bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition-colors">
+                    ดนตรี
+                </button>
+                <button onclick="filterClubs('sports')" class="filter-btn bg-green-600 text-white px-6 py-2 rounded-full font-medium hover:bg-green-700 transition-colors">
+                    กีฬา
+                </button>
+                <button onclick="filterClubs('art')" class="filter-btn bg-pink-600 text-white px-6 py-2 rounded-full font-medium hover:bg-pink-700 transition-colors">
+                    ศิลปะ
+                </button>
+                <button onclick="filterClubs('tech')" class="filter-btn bg-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:bg-indigo-700 transition-colors">
+                    เทคโนโลยี
+                </button>
+                <button onclick="filterClubs('academic')" class="filter-btn bg-yellow-600 text-white px-6 py-2 rounded-full font-medium hover:bg-yellow-700 transition-colors">
+                    วิชาการ
+                </button>
+                <button onclick="filterClubs('volunteer')" class="filter-btn bg-red-600 text-white px-6 py-2 rounded-full font-medium hover:bg-red-700 transition-colors">
+                    อาสาสมัคร
+                </button>
+            </div>
+
+            <!-- Clubs Grid -->
+            <div id="clubs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
     </div>
 
     <!-- Activities Page -->
     <div id="activities-page" class="page hidden">
-        <!-- ... เนื้อหาเหมือนเดิม ... -->
-    </div>
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">กิจกรรม</h1>
+    
+            <!-- Activity Sections -->
+            <div class="space-y-12">
+                <!-- Open Activities -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-6 text-green-600 flex items-center">
+                        <i class="fas fa-door-open mr-3"></i>กิจกรรมที่เปิดรับสมัคร
+                        <span class="activity-badge bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full ml-3">เปิดรับ</span>
+                    </h2>
+                    <div id="open-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
 
+                <!-- Closing Soon Activities -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-6 text-orange-600 flex items-center">
+                        <i class="fas fa-clock mr-3"></i>กิจกรรมที่ใกล้ปิดรับสมัคร
+                        <span class="activity-badge bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full ml-3">เหลือเวลาน้อย</span>
+                    </h2>
+                    <div id="closing-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+
+                <!-- Closed Activities -->
+                <div>
+                    <h2 class="text-2xl font-bold mb-6 text-gray-600 flex items-center">
+                        <i class="fas fa-door-closed mr-3"></i>กิจกรรมที่ปิดรับสมัครแล้ว
+                        <span class="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full ml-3">ปิดรับ</span>
+                    </h2>
+                    <div id="closed-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Login Page -->
     <div id="login-page" class="page hidden">
-        <!-- ... เนื้อหาเหมือนเดิม ... -->
+        <div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-md w-full space-y-8">
+                <div class="bg-white rounded-2xl shadow-2xl p-8">
+                    <div class="text-center">
+                        <i class="fas fa-university text-4xl text-purple-600 mb-4"></i>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">เข้าสู่ระบบ</h2>
+                        <p class="text-gray-600">เข้าสู่ระบบจัดการชมรมนักศึกษา</p>
+                    </div>
+                    
+                    <form class="mt-8 space-y-6" onsubmit="handleLogin(event)">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="login-email" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-envelope mr-2 text-purple-600"></i>อีเมล
+                                </label>
+                                <input id="login-email" name="email" type="email" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                    placeholder="กรอกอีเมลของคุณ">
+                            </div>
+                            
+                            <div>
+                                <label for="login-password" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-lock mr-2 text-purple-600"></i>รหัสผ่าน
+                                </label>
+                                <div class="relative">
+                                    <input id="login-password" name="password" type="password" required 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all pr-12"
+                                        placeholder="กรอกรหัสผ่านของคุณ">
+                                    <button type="button" onclick="togglePassword('login-password')" 
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <input id="remember-me" name="remember-me" type="checkbox" 
+                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                <label for="remember-me" class="ml-2 block text-sm text-gray-700">
+                                    จดจำการเข้าสู่ระบบ
+                                </label>
+                            </div>
+                            <div class="text-sm">
+                                <a href="#" class="font-medium text-purple-600 hover:text-purple-500">
+                                    ลืมรหัสผ่าน?
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
+                                <i class="fas fa-sign-in-alt mr-2"></i>
+                                เข้าสู่ระบบ
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">
+                                ยังไม่มีบัญชี?
+                                <button type="button" onclick="showPage('register')" 
+                                        class="font-medium text-purple-600 hover:text-purple-500">
+                                    สมัครสมาชิกที่นี่
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Register Page -->
+    <div id="register-page" class="page hidden">
+        <div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl w-full space-y-8">
+                <div class="bg-white rounded-2xl shadow-2xl p-8">
+                    <div class="text-center">
+                        <i class="fas fa-user-plus text-4xl text-purple-600 mb-4"></i>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2">สมัครสมาชิก</h2>
+                        <p class="text-gray-600">สร้างบัญชีเพื่อเข้าร่วมชมรมนักศึกษา</p>
+                    </div>
+                    
+                    <form class="mt-8 space-y-6" onsubmit="handleRegister(event)">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="register-fullname" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-user mr-2 text-purple-600"></i>ชื่อ-นามสกุล
+                                </label>
+                                <input id="register-fullname" name="fullname" type="text" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                    placeholder="กรอกชื่อ-นามสกุลของคุณ">
+                            </div>
+                            
+                            <div>
+                                <label for="register-student-id" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-id-card mr-2 text-purple-600"></i>รหัสนักศึกษา
+                                </label>
+                                <input id="register-student-id" name="student-id" type="text" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                    placeholder="กรอกรหัสนักศึกษา">
+                            </div>
+                            
+                            <div>
+                                <label for="register-faculty" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-building mr-2 text-purple-600"></i>คณะ
+                                </label>
+                                <select id="register-faculty" name="faculty" required 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                        onchange="updateMajors()">
+                                    <option value="">เลือกคณะ</option>
+                                    <option value="engineering">คณะวิศวกรรมศาสตร์</option>
+                                    <option value="science">คณะวิทยาศาสตร์</option>
+                                    <option value="arts">คณะศิลปศาสตร์</option>
+                                    <option value="business">คณะบริหารธุรกิจ</option>
+                                    <option value="education">คณะครุศาสตร์</option>
+                                    <option value="medicine">คณะแพทยศาสตร์</option>
+                                    <option value="law">คณะนิติศาสตร์</option>
+                                    <option value="communication">คณะนิเทศศาสตร์</option>
+                                </select>
+                            </div>
+                            
+                            <div>
+                                <label for="register-major" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-graduation-cap mr-2 text-purple-600"></i>สาขา
+                                </label>
+                                <select id="register-major" name="major" required 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                    <option value="">เลือกสาขา</option>
+                                </select>
+                            </div>
+                            
+                            <div class="md:col-span-2">
+                                <label for="register-email" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-envelope mr-2 text-purple-600"></i>อีเมล
+                                </label>
+                                <input id="register-email" name="email" type="email" required 
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                                    placeholder="กรอกอีเมลของคุณ">
+                            </div>
+                            
+                            <div>
+                                <label for="register-password" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-lock mr-2 text-purple-600"></i>รหัสผ่าน
+                                </label>
+                                <div class="relative">
+                                    <input id="register-password" name="password" type="password" required 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all pr-12"
+                                        placeholder="กรอกรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
+                                        minlength="6">
+                                    <button type="button" onclick="togglePassword('register-password')" 
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 mb-2">
+                                    <i class="fas fa-lock mr-2 text-purple-600"></i>ยืนยันรหัสผ่าน
+                                </label>
+                                <div class="relative">
+                                    <input id="register-confirm-password" name="confirm-password" type="password" required 
+                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all pr-12"
+                                        placeholder="ยืนยันรหัสผ่านอีกครั้ง">
+                                    <button type="button" onclick="togglePassword('register-confirm-password')" 
+                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                        <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input id="agree-terms" name="agree-terms" type="checkbox" required
+                                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                            <label for="agree-terms" class="ml-2 block text-sm text-gray-700">
+                                ฉันยอมรับ <a href="#" class="text-purple-600 hover:text-purple-500">ข้อกำหนดและเงื่อนไข</a> 
+                                และ <a href="#" class="text-purple-600 hover:text-purple-500">นโยบายความเป็นส่วนตัว</a>
+                            </label>
+                        </div>
+
+                        <div>
+                            <button type="submit"
+                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                สมัครสมาชิก
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <p class="text-sm text-gray-600">
+                                มีบัญชีอยู่แล้ว?
+                                <button type="button" onclick="showPage('login')"
+                                        class="font-medium text-purple-600 hover:text-purple-500">
+                                    เข้าสู่ระบบที่นี่
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Register Page -->
-    <div id="register-page" class="page hidden">
-        <!-- ... เนื้อหาเหมือนเดิม ... -->
-    </div>
+    <!-- Modal for Activity Registration -->
+    <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
+            <h3 class="text-2xl font-bold mb-4">สมัครกิจกรรม</h3>
+            <div id="modal-content"></div>
+            <div class="flex gap-4 mt-6">
+                <button onclick="closeModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg transition-colors">
+                    ยกเลิก
+                </button>
+                <button onclick="confirmRegistration()" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
+                    ยืนยันการสมัคร
+                </button>
+            </div>
+        </div>
 
     <!-- Modal for Activity Registration -->
     <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
@@ -126,7 +434,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>
