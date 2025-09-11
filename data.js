@@ -112,7 +112,7 @@ const activitiesData = [
         id: 1,
         name: "คอนเสิร์ตดนตรีประจำปี",
         club: "ชมรมดนตรีสากล",
-        date: "2024-02-15",
+        date: "2025-09-15",
         status: "open",
         description: "คอนเสิร์ตใหญ่ประจำปีของชมรมดนตรี เปิดให้สมัครเข้าร่วมแสดง",
         deadline: "2024-01-30"
@@ -121,7 +121,7 @@ const activitiesData = [
         id: 2,
         name: "แข่งขันฟุตบอลระหว่างคณะ",
         club: "ชมรมฟุตบอล",
-        date: "2024-02-20",
+        date: "2025-09-20",
         status: "closing",
         description: "การแข่งขันฟุตบอลระหว่างคณะ เหลือเวลาสมัครอีกไม่กี่วัน",
         deadline: "2024-01-25"
@@ -139,7 +139,7 @@ const activitiesData = [
         id: 4,
         name: "Workshop การเขียนโปรแกรม",
         club: "ชมรมเทคโนโลยี",
-        date: "2024-02-10",
+        date: "2029-09-10",
         status: "open",
         description: "เวิร์คช็อปสอนการเขียนโปรแกรมสำหรับผู้เริ่มต้น",
         deadline: "2024-02-05"
@@ -148,10 +148,10 @@ const activitiesData = [
         id: 5,
         name: "การแข่งขันแบดมินตัน",
         club: "ชมรมแบดมินตัน",
-        date: "2024-01-28",
+        date: "2025-09-28",
         status: "closing",
         description: "การแข่งขันแบดมินตันประจำปี เหลือเวลาสมัครอีก 3 วัน",
-        deadline: "2024-01-26"
+        deadline: "2025-09-30"
     },
     {
         id: 6,
