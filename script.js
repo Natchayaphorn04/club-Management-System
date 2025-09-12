@@ -160,12 +160,20 @@ function renderClubs() {
     const clubsGrid = document.getElementById('clubs-grid');
     clubsGrid.innerHTML = clubsData.map(club => `
         <div class="club-card card-hover bg-white rounded-2xl shadow-lg overflow-hidden" data-category="${club.category}">
-            <div class="h-48 bg-gradient-to-br ${getClubGradient(club.category)} flex items-center justify-center">
-                <div class="text-center text-white">
-                    <div class="text-6xl mb-4">${getClubIcon(club.category)}</div>
-                    <h3 class="text-xl font-bold">${club.name}</h3>
+        <div class="h-48 bg-gradient-to-br ${getClubGradient(club.category)} relative flex items-center justify-center">
+            <div class="absolute inset-0 bg-black bg-opacity-10"></div>
+            <div class="relative z-10 text-center text-white">
+                <!-- Club Logo -->
+                <div class="mx-auto mb-4">
+                    <img src="${club.logo}"
+                    alt="${club.name} logo"
+                    class="w-20 h-20 rounded-full border-4 border-white shadow-lg object-cover mx-auto"
+                    onerror="this.style.display='none'">
                 </div>
-            </div>
+            <div class="text-6xl mb-4">${getClubIcon(club.category)}</div>
+            <h3 class="text-xl font-bold">${club.name}</h3>
+        </div>
+        </div>
             <div class="p-6">
                 <div class="mb-4">
                     <span class="inline-block bg-${getClubColor(club.category)}-100 text-${getClubColor(club.category)}-800 text-xs px-2 py-1 rounded-full">
@@ -198,6 +206,26 @@ function renderClubs() {
                 </div>
             </div>
         </div>
+        
+        <div class="mb-4">
+            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                <i class="fas fa-calendar-check mr-2 text-green-600"></i> กิจกรรมที่เคยจัด
+            </h4>
+            <div class="space-y-2 max-h-32 overflow-y-auto">
+                ${club.pastActivities.map((activity, index) => `
+                    <div class="flex items-start text-sm">
+                        <div class="w-5 h-5 rounded-full bg-${getClubColor(club.category)}-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <span class="text-${getClubColor(club.category)}-600 text-xs font-bold">${index + 1}</span>
+                    </div>
+                    <span class="ml-2 text-gray-600 leading-relaxed">${activity}</span>
+            </div>
+        `).join('')}
+    </div>
+    <button onclick="showAllActivities(${club.id}, '${club.name}')"
+            class="mt-2 text-${getClubColor(club.category)}-600 hover:text-${getClubColor(club.category)}-800 text-sm font-medium flex items-center">
+        <i class="fas fa-plus-circle mr-1"></i>ดูกิจกรรมทั้งหมด
+    </button>
+</div>
     `).join('');
 }
 
@@ -534,8 +562,8 @@ function renderRecentActivities() {
                                     <div class="font-medium">เหลือเวลา</div>
                                     <div class="text-gray-900 font-semibold">
                                         ${daysLeft === 0 ? '🔥 วันนี้!' : 
-                                        daysLeft === 1 ? '⚡ พรุ่งนี้' : 
-                                        daysLeft > 0 ? `${daysLeft} วัน` : 
+                                        daysLeft === 1 ? '⚡ พรุ่งนี้' :
+                                        daysLeft > 0 ? `${daysLeft} วัน` :
                                         `ผ่านไปแล้ว`}
                                     </div>
                                 </div>
@@ -555,11 +583,11 @@ function renderRecentActivities() {
                 <!-- Action Buttons -->
                 <div class="flex gap-3">
                     ${activity.status !== 'closed' && !deadlinePassed ? `
-                        <button onclick="openRegistrationModal(${activity.id})" 
+                        <button onclick="openRegistrationModal(${activity.id})"
                                 class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-lg transition-all duration-200 font-medium text-sm shadow-md hover:shadow-lg">
                             <i class="fas fa-user-plus mr-2"></i>สมัครเข้าร่วม
                         </button>
-                        <button onclick="showActivityDetails(${activity.id})" 
+                        <button onclick="showActivityDetails(${activity.id})"
                                 class="px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-800 rounded-lg transition-all duration-200 font-medium text-sm">
                             <i class="fas fa-info-circle mr-1"></i>รายละเอียด
                         </button>
@@ -567,7 +595,7 @@ function renderRecentActivities() {
                         <button disabled class="flex-1 bg-gray-300 text-gray-500 py-3 px-4 rounded-lg cursor-not-allowed font-medium text-sm">
                             <i class="fas fa-lock mr-2"></i>ปิดรับสมัครแล้ว
                         </button>
-                        <button onclick="showActivityDetails(${activity.id})" 
+                        <button onclick="showActivityDetails(${activity.id})"
                                 class="px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:text-gray-800 rounded-lg transition-all duration-200 font-medium text-sm">
                             <i class="fas fa-info-circle mr-1"></i>ดูรายละเอียด
                         </button>
@@ -622,7 +650,7 @@ function getActivityStatusConfig(status) {
         },
         'closing': {
             text: 'ใกล้ปิดรับ',
-            bgColor: 'bg-orange-100', 
+            bgColor: 'bg-orange-100',
             textColor: 'text-orange-800'
         },
         'closed': {
@@ -695,6 +723,51 @@ function showActivityDetails(activityId) {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
+// === ACTIVITY BANNERS SECTION ===
+
+// แสดง Activity Banners
+function renderActivityBanners() {
+    const container = document.getElementById('activity-banners');
+    
+    if (!container) {
+        console.error('Element #activity-banners not found!');
+        return;
+    }
+    
+    // ใช้ข้อมูลกิจกรรมจริง หรือข้อมูลทดสอบ
+    let activities = activitiesData;
+    if (!activities || activities.length === 0) {
+        activities = [
+            {
+                id: 1,
+                name: "คอนเสิร์ตดนตรีประจำปี",
+                club: "ชมรมดนตรีสากล",
+                date: "2024-02-15",
+                status: "open",
+                description: "คอนเสิร์ตใหญ่ประจำปีของชมรมดนตรี เปิดให้สมัครเข้าร่วมแสดง",
+                deadline: "2024-01-30"
+            },
+            {
+                id: 2,
+                name: "แข่งขันฟุตบอลระหว่างคณะ",
+                club: "ชมรมฟุตบอล",
+                date: "2024-02-20",
+                status: "closing",
+                description: "การแข่งขันฟุตบอลระหว่างคณะ เหลือเวลาสมัครอีกไม่กี่วัน",
+                deadline: "2024-01-25"
+            },
+            {
+                id: 3,
+                name: "นิทรรศการศิลปกรรม",
+                club: "ชมรมศิลปกรรม",
+                date: "2024-01-15",
+                status: "closed",
+                description: "นิทรรศการแสดงผลงานศิลปกรรมของสมาชิก",
+                deadline: "2024-01-10"
+            }
+        ];
+    }
+}
 
 // เพิ่ม CSS class สำหรับ line-clamp
 const style = document.createElement('style');
@@ -707,3 +780,74 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+// === BANNER SLIDER SECTION ===
+
+let currentSlide = 0;
+const totalSlides = 4;
+let slideInterval;
+
+// เริ่มต้น Banner Slider
+function initBannerSlider() {
+    // เริ่มต้น auto slide
+    startAutoSlide();
+    
+    // หยุด auto slide เมื่อ hover
+    const sliderContainer = document.getElementById('banner-slider');
+    if (sliderContainer) {
+        sliderContainer.parentElement.addEventListener('mouseenter', stopAutoSlide);
+        sliderContainer.parentElement.addEventListener('mouseleave', startAutoSlide);
+    }
+}
+
+// ไปสไลด์ถัดไป
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateSlider();
+}
+
+// ไปสไลด์ก่อนหน้า
+function previousSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateSlider();
+}
+
+// ไปยังสไลด์ที่กำหนด
+function goToSlide(slideIndex) {
+    currentSlide = slideIndex;
+    updateSlider();
+}
+
+// อัพเดต slider
+function updateSlider() {
+    const slider = document.getElementById('banner-slider');
+    const dots = document.querySelectorAll('.slide-dot');
+    
+    if (slider) {
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+    
+    // อัพเดต dots
+    dots.forEach((dot, index) => {
+        if (index === currentSlide) {
+            dot.classList.remove('bg-gray-300');
+            dot.classList.add('bg-blue-600');
+        } else {
+            dot.classList.remove('bg-blue-600');
+            dot.classList.add('bg-gray-300');
+        }
+    });
+}
+
+// เริ่ม auto slide
+function startAutoSlide() {
+    stopAutoSlide(); // หยุดก่อนเพื่อป้องกันการซ้ำ
+    slideInterval = setInterval(nextSlide, 5000); // เปลี่ยนทุก 5 วินาที
+}
+
+// หยุด auto slide
+function stopAutoSlide() {
+    if (slideInterval) {
+        clearInterval(slideInterval);
+        slideInterval = null;
+    }
+}
