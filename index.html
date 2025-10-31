@@ -1,545 +1,231 @@
 <!DOCTYPE html>
 <html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบจัดการชมรมนักศึกษา</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ระบบจัดการชมรมนักศึกษา</title>
+        
+        <!-- External Libraries -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/components.css">
+        <link rel="stylesheet" href="css/animations.css">
+        <link rel="stylesheet" href="css/responsive.css">
+    </head>
 
-<body class="bg-gray-50">
-    <!-- Navigation -->
-    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <i class="fas fa-university text-white text-2xl mr-3"></i>
-                    <span class="text-white text-xl font-bold">ระบบจัดการชมรม</span>
-                </div>
-                <div class="flex items-center space-x-8">
-                    <button onclick="showPage('home')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
-                        <i class="fas fa-home mr-2"></i>หน้าหลัก
-                    </button>
-                    <button onclick="showPage('clubs')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
-                        <i class="fas fa-users mr-2"></i>รายชื่อชมรม
-                    </button>
-                    <button onclick="showPage('activities')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
-                        <i class="fas fa-calendar-alt mr-2"></i>กิจกรรม
-                    </button>
-            
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Home Page -->
-    <div id="home-page" class="page">
-        <!-- Hero Section -->
-        <div class="gradient-bg text-white py-20">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <h1 class="text-5xl font-bold mb-6">ค้นหาชมรมที่ใช่สำหรับคุณ</h1>
-                <p class="text-xl mb-8 opacity-90">ใช้ AI ช่วยแนะนำชมรมตามความสนใจของคุณ</p>
-                <!-- AI Club Recommendation -->
-                <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8 ai-glow">
-                    <h3 class="text-2xl font-semibold mb-4">🤖 AI แนะนำชมรม</h3>
-                    <div class="flex gap-4">
-                        <input type="text" id="interest-input" placeholder="เช่น: ดนตรี, กีฬา, เทคโนโลยี, ศิลปะ..."
-                            class="flex-1 px-4 py-3 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                        <button onclick="generateClubRecommendations()"
-                                class="bg-yellow-500 hover:bg-yellow-600 px-8 py-3 rounded-lg font-semibold text-gray-800 transition-colors">
-                            <i class="fas fa-magic mr-2"></i>แนะนำ
+    <body class="bg-gray-50">
+        <!-- ============================================
+            NAVIGATION BAR
+            ============================================ -->
+        <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <!-- Logo -->
+                    <div class="flex items-center">
+                        <i class="fas fa-university text-white text-2xl mr-3"></i>
+                        <span class="text-white text-xl font-bold">ระบบจัดการชมรม</span>
+                    </div>
+                    
+                    <!-- Navigation Links -->
+                    <div class="flex items-center space-x-8">
+                        <button onclick="Navigation.showPage('home')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                            <i class="fas fa-home mr-2"></i>หน้าหลัก
                         </button>
-                    </div>
-                    <div id="ai-recommendations" class="mt-6 hidden">
-                        <h4 class="font-semibold mb-3">ชมรมที่แนะนำสำหรับคุณ:</h4>
-                        <div id="recommended-clubs" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Image Banner Slider -->
-        <div class="max-w-7xl mx-auto px-4 py-16">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">🎯 กิจกรรมแนะนำ</h2>
-            
-            <div class="relative">
-                <!-- Slider Container -->
-                <div class="overflow-hidden rounded-2xl shadow-2xl">
-                    <div id="banner-slider" class="flex transition-transform duration-500 ease-in-out">
-                        <!-- Slide 1 - คอนเสิร์ตดนตรี -->
-                        <div class="min-w-full h-96 relative">
-                            <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1200&h=400&fit=crop&crop=center" 
-                                alt="คอนเสิร์ตดนตรี"
-                                class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="text-white px-8 md:px-16">
-                                    <h3 class="text-4xl md:text-5xl font-bold mb-4">คอนเสิร์ตดนตรีประจำปี</h3>
-                                    <p class="text-xl md:text-2xl mb-4 opacity-90">ชมรมดนตรีสากล</p>
-                                    <p class="text-lg mb-6 max-w-2xl">เข้าร่วมการแสดงดนตรีสุดยิ่งใหญ่ประจำปี พบกับนักดนตรีมากมายและเพลงสากลสุดฮิต</p>
-                                    <div class="flex gap-4">
-                                        <button onclick="openRegistrationModal(1)"
-                                                class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                            สมัครเข้าร่วม
-                                        </button>
-                                        <button onclick="showActivityDetails(1)"
-                                                class="border-2 border-white text-white hover:bg-white hover:text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors">
-                                            ดูรายละเอียด
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 2 - แข่งขันกีฬา -->
-                        <div class="min-w-full h-96 relative">
-                            <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=1200&h=400&fit=crop&crop=center" 
-                                alt="แข่งขันกีฬา"
-                                class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="text-white px-8 md:px-16">
-                                    <h3 class="text-4xl md:text-5xl font-bold mb-4">แข่งขันฟุตบอลระหว่างคณะ</h3>
-                                    <p class="text-xl md:text-2xl mb-4 opacity-90">ชมรมฟุตบอล</p>
-                                    <p class="text-lg mb-6 max-w-2xl">ร่วมเชียร์และสนับสนุนทีมของคุณในการแข่งขันฟุตบอลสุดมันส์ระหว่างคณะต่างๆ</p>
-                                    <div class="flex gap-4">
-                                        <button onclick="openRegistrationModal(2)" 
-                                                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                            สมัครเข้าร่วม
-                                        </button>
-                                        <button onclick="showActivityDetails(2)" 
-                                                class="border-2 border-white text-white hover:bg-white hover:text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors">
-                                            ดูรายละเอียด
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 3 - นิทรรศการศิลปะ -->
-                        <div class="min-w-full h-96 relative">
-                            <img src="https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200&h=400&fit=crop&crop=center" 
-                                alt="นิทรรศการศิลปะ"
-                                class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="text-white px-8 md:px-16">
-                                    <h3 class="text-4xl md:text-5xl font-bold mb-4">นิทรรศการศิลปกรรม</h3>
-                                    <p class="text-xl md:text-2xl mb-4 opacity-90">ชมรมศิลปกรรม</p>
-                                    <p class="text-lg mb-6 max-w-2xl">ชมผลงานศิลปกรรมสุดสร้างสรรค์จากนักศึกษาและศิลปินรุ่นใหม่</p>
-                                    <div class="flex gap-4">
-                                        <button onclick="openRegistrationModal(3)"
-                                                class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                            สมัครเข้าร่วม
-                                        </button>
-                                        <button onclick="showActivityDetails(3)"
-                                                class="border-2 border-white text-white hover:bg-white hover:text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors">
-                                            ดูรายละเอียด
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Slide 4 - Workshop เทคโนโลยี -->
-                        <div class="min-w-full h-96 relative">
-                            <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?w=1200&h=400&fit=crop&crop=center" 
-                                alt="Workshop เทคโนโลยี"
-                                class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="text-white px-8 md:px-16">
-                                    <h3 class="text-4xl md:text-5xl font-bold mb-4">Workshop การเขียนโปรแกรม</h3>
-                                    <p class="text-xl md:text-2xl mb-4 opacity-90">ชมรมเทคโนโลยี</p>
-                                    <p class="text-lg mb-6 max-w-2xl">เรียนรู้การเขียนโปรแกรมจากพื้นฐานไปจนถึงขั้นสูงกับผู้เชี่ยวชาญ</p>
-                                    <div class="flex gap-4">
-                                        <button onclick="openRegistrationModal(4)"
-                                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
-                                            สมัครเข้าร่วม
-                                        </button>
-                                        <button onclick="showActivityDetails(4)"
-                                                class="border-2 border-white text-white hover:bg-white hover:text-gray-800 px-6 py-3 rounded-lg font-medium transition-colors">
-                                            ดูรายละเอียด
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Arrows -->
-                <button onclick="previousSlide()"
-                        class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors z-10">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button onclick="nextSlide()"
-                        class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full transition-colors z-10">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-
-                <!-- Dots Indicator -->
-                <div class="flex justify-center mt-6 space-x-2">
-                    <button onclick="goToSlide(0)" class="slide-dot w-3 h-3 rounded-full bg-blue-600 transition-colors"></button>
-                    <button onclick="goToSlide(1)" class="slide-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors"></button>
-                    <button onclick="goToSlide(2)" class="slide-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors"></button>
-                    <button onclick="goToSlide(3)" class="slide-dot w-3 h-3 rounded-full bg-gray-300 hover:bg-gray-400 transition-colors"></button>
-                </div>
-            </div>
-        </div>
-        <!-- Calendar Section -->
-        <div class="max-w-7xl mx-auto px-4 py-16">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">📅 ปฏิทินกิจกรรม</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- ปฏิทินขนาดเล็ก -->
-                <div class="lg:col-span-1">
-                    <div class="bg-white rounded-2xl shadow-xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <button onclick="changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg">
-                                <i class="fas fa-chevron-left text-gray-600"></i>
-                            </button>
-                            <h3 id="calendar-month" class="text-xl font-semibold text-gray-800"></h3>
-                            <button onclick="changeMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg">
-                                <i class="fas fa-chevron-right text-gray-600"></i>
-                            </button>
-                        </div>
-                        <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
-                    </div>
-                </div>
-                <!-- รายการกิจกรรมล่าสุด -->
-                <div class="lg:col-span-2">
-                    <div class="bg-white rounded-2xl shadow-xl p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-bold text-gray-800">
-                                <i class="fas fa-calendar-check text-blue-600 mr-2"></i>
-                                กิจกรรมล่าสุด
-                            </h3>
-                            <button onclick="showPage('activities')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                ดูทั้งหมด <i class="fas fa-arrow-right ml-1"></i>
-                            </button>
-                        </div>
+                        <button onclick="Navigation.showPage('clubs')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                            <i class="fas fa-users mr-2"></i>รายชื่อชมรม
+                        </button>
+                        <button onclick="Navigation.showPage('activities')" class="nav-btn text-white hover:text-yellow-300 transition-colors font-medium">
+                            <i class="fas fa-calendar-alt mr-2"></i>กิจกรรม
+                        </button>
                         
-                        <div id="recent-activities" class="space-y-6 max-h-96 overflow-y-auto">
-                            <!-- กิจกรรมจะแสดงที่นี่ -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Clubs Page -->
-    <div id="clubs-page" class="page hidden">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">รายชื่อชมรม</h1>
-    
-            <!-- Category Filter -->
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <button onclick="filterClubs('all')" class="filter-btn bg-purple-600 text-white px-6 py-2 rounded-full font-medium hover:bg-purple-700 transition-colors">
-                    ทั้งหมด
-                </button>
-                <button onclick="filterClubs('music')" class="filter-btn bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition-colors">
-                    ดนตรี
-                </button>
-                <button onclick="filterClubs('sports')" class="filter-btn bg-green-600 text-white px-6 py-2 rounded-full font-medium hover:bg-green-700 transition-colors">
-                    กีฬา
-                </button>
-                <button onclick="filterClubs('art')" class="filter-btn bg-pink-600 text-white px-6 py-2 rounded-full font-medium hover:bg-pink-700 transition-colors">
-                    ศิลปะ
-                </button>
-                <button onclick="filterClubs('tech')" class="filter-btn bg-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:bg-indigo-700 transition-colors">
-                    เทคโนโลยี
-                </button>
-                <button onclick="filterClubs('academic')" class="filter-btn bg-yellow-600 text-white px-6 py-2 rounded-full font-medium hover:bg-yellow-700 transition-colors">
-                    วิชาการ
-                </button>
-                <button onclick="filterClubs('volunteer')" class="filter-btn bg-red-600 text-white px-6 py-2 rounded-full font-medium hover:bg-red-700 transition-colors">
-                    อาสาสมัคร
-                </button>
-            </div>
-
-            <!-- Clubs Grid -->
-            <div id="clubs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
-        </div>
-    </div>
-
-    <!-- Activities Page -->
-    <div id="activities-page" class="page hidden">
-        <div class="max-w-7xl mx-auto px-4 py-8">
-            <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">กิจกรรม</h1>
-    
-            <!-- Activity Sections -->
-            <div class="space-y-12">
-                <!-- Open Activities -->
-                <div>
-                    <h2 class="text-2xl font-bold mb-6 text-green-600 flex items-center">
-                        <i class="fas fa-door-open mr-3"></i>กิจกรรมที่เปิดรับสมัคร
-                        <span class="activity-badge bg-green-100 text-green-800 text-sm px-3 py-1 rounded-full ml-3">เปิดรับ</span>
-                    </h2>
-                    <div id="open-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                </div>
-
-                <!-- Closing Soon Activities -->
-                <div>
-                    <h2 class="text-2xl font-bold mb-6 text-orange-600 flex items-center">
-                        <i class="fas fa-clock mr-3"></i>กิจกรรมที่ใกล้ปิดรับสมัคร
-                        <span class="activity-badge bg-orange-100 text-orange-800 text-sm px-3 py-1 rounded-full ml-3">เหลือเวลาน้อย</span>
-                    </h2>
-                    <div id="closing-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                </div>
-
-                <!-- Closed Activities -->
-                <div>
-                    <h2 class="text-2xl font-bold mb-6 text-gray-600 flex items-center">
-                        <i class="fas fa-door-closed mr-3"></i>กิจกรรมที่ปิดรับสมัครแล้ว
-                        <span class="bg-gray-100 text-gray-800 text-sm px-3 py-1 rounded-full ml-3">ปิดรับ</span>
-                    </h2>
-                    <div id="closed-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Login Page -->
-    <div id="login-page" class="page hidden">
-        <div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-md w-full space-y-8">
-                <div class="bg-white rounded-2xl shadow-2xl p-8">
-                    <div class="text-center">
-                        <i class="fas fa-university text-4xl text-purple-600 mb-4"></i>
-                        <h2 class="text-3xl font-bold text-gray-900 mb-2">เข้าสู่ระบบ</h2>
-                        <p class="text-gray-600">เข้าสู่ระบบจัดการชมรมนักศึกษา</p>
-                    </div>
-                    
-                    <form class="mt-8 space-y-6" onsubmit="handleLogin(event)">
-                        <div class="space-y-4">
-                            <div>
-                                <label for="login-email" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-envelope mr-2 text-purple-600"></i>อีเมล
-                                </label>
-                                <input id="login-email" name="email" type="email" required 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                    placeholder="กรอกอีเมลของคุณ">
-                            </div>
+                        <!-- Auth Section -->
+                        <div id="auth-section">
+                            <!-- Login Button -->
+                            <button id="login-btn" onclick="Auth.showLoginModal()" 
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-sign-in-alt mr-2"></i>เข้าสู่ระบบ
+                            </button>
                             
-                            <div>
-                                <label for="login-password" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-lock mr-2 text-purple-600"></i>รหัสผ่าน
-                                </label>
-                                <div class="relative">
-                                    <input id="login-password" name="password" type="password" required 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all pr-12"
-                                        placeholder="กรอกรหัสผ่านของคุณ">
-                                    <button type="button" onclick="togglePassword('login-password')"
-                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
-                                    </button>
+                            <!-- User Status -->
+                            <div id="user-status" class="hidden flex items-center space-x-4">
+                                <div class="flex items-center space-x-2 text-white">
+                                    <div class="user-avatar rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span id="user-greeting" class="text-sm font-medium"></span>
                                 </div>
+                                <button onclick="Auth.logout()" class="text-white hover:text-yellow-300 transition-colors font-medium text-sm">
+                                    <i class="fas fa-sign-out-alt mr-1"></i>ออกจากระบบ
+                                </button>
                             </div>
                         </div>
+                            <a href="login-admin.html" class="text-white hover:text-yellow-300">
+                            <i class="fas fa-shield-alt mr-2"></i>Admin
+                            </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <input id="remember-me" name="remember-me" type="checkbox"
-                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                                <label for="remember-me" class="ml-2 block text-sm text-gray-700">
-                                    จดจำการเข้าสู่ระบบ
-                                </label>
-                            </div>
-                            <div class="text-sm">
-                                <a href="#" class="font-medium text-purple-600 hover:text-purple-500">
-                                    ลืมรหัสผ่าน?
-                                </a>
-                            </div>
-                        </div>
-
-                        <div>
-                            <button type="submit"
-                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
-                                <i class="fas fa-sign-in-alt mr-2"></i>
-                                เข้าสู่ระบบ
+        <!-- ============================================
+            HOME PAGE
+            ============================================ -->
+        <div id="home-page" class="page">
+            <!-- Hero Section -->
+            <div class="gradient-bg text-white py-20">
+                <div class="max-w-7xl mx-auto px-4 text-center">
+                    <h1 class="text-5xl font-bold mb-6">ค้นหาชมรมที่ใช่สำหรับคุณ</h1>
+                    <p class="text-xl mb-8 opacity-90">ใช้ AI ช่วยแนะนำชมรมตามความสนใจของคุณ</p>
+            
+                    <!-- AI Club Recommendation -->
+                    <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8 ai-glow">
+                        <h3 class="text-2xl font-semibold mb-4">🤖 AI แนะนำชมรม</h3>
+                        <div class="flex gap-4">
+                            <input type="text" id="interest-input"
+                                placeholder="เช่น: ดนตรี, กีฬา, เทคโนโลยี, ศิลปะ..."
+                                class="flex-1 px-4 py-3 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                            <button onclick="HomePage.generateRecommendations()"
+                                    class="bg-yellow-500 hover:bg-yellow-600 px-8 py-3 rounded-lg font-semibold text-gray-800 transition-colors">
+                                <i class="fas fa-magic mr-2"></i>แนะนำ
                             </button>
                         </div>
-
-                        <div class="text-center">
-                            <p class="text-sm text-gray-600">
-                                ยังไม่มีบัญชี?
-                                <button type="button" onclick="showPage('register')"
-                                        class="font-medium text-purple-600 hover:text-purple-500">
-                                    สมัครสมาชิกที่นี่
-                                </button>
-                            </p>
+                        <div id="ai-recommendations" class="mt-6 hidden">
+                            <h4 class="font-semibold mb-3">ชมรมที่แนะนำสำหรับคุณ:</h4>
+                            <div id="recommended-clubs" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                         </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-<!-- Register Page -->
-    <div id="register-page" class="page hidden">
-        <div class="min-h-screen gradient-bg flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-2xl w-full space-y-8">
-                <div class="bg-white rounded-2xl shadow-2xl p-8">
-                    <div class="text-center">
-                        <i class="fas fa-user-plus text-4xl text-purple-600 mb-4"></i>
-                        <h2 class="text-3xl font-bold text-gray-900 mb-2">สมัครสมาชิก</h2>
-                        <p class="text-gray-600">สร้างบัญชีเพื่อเข้าร่วมชมรมนักศึกษา</p>
                     </div>
-                    
-                    <form class="mt-8 space-y-6" onsubmit="handleRegister(event)">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="register-fullname" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-user mr-2 text-purple-600"></i>ชื่อ-นามสกุล
-                                </label>
-                                <input id="register-fullname" name="fullname" type="text" required 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                    placeholder="กรอกชื่อ-นามสกุลของคุณ">
-                            </div>
-                            
-                            <div>
-                                <label for="register-student-id" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-id-card mr-2 text-purple-600"></i>รหัสนักศึกษา
-                                </label>
-                                <input id="register-student-id" name="student-id" type="text" required 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                    placeholder="กรอกรหัสนักศึกษา">
-                            </div>
-                            
-                            <div>
-                                <label for="register-faculty" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-building mr-2 text-purple-600"></i>คณะ
-                                </label>
-                                <select id="register-faculty" name="faculty" required 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                        onchange="updateMajors()">
-                                    <option value="">เลือกคณะ</option>
-                                    <option value="engineering">คณะวิศวกรรมศาสตร์</option>
-                                    <option value="science">คณะวิทยาศาสตร์</option>
-                                    <option value="arts">คณะศิลปศาสตร์</option>
-                                    <option value="business">คณะบริหารธุรกิจ</option>
-                                    <option value="education">คณะครุศาสตร์</option>
-                                    <option value="medicine">คณะแพทยศาสตร์</option>
-                                    <option value="law">คณะนิติศาสตร์</option>
-                                    <option value="communication">คณะนิเทศศาสตร์</option>
-                                </select>
-                            </div>
-                            
-                            <div>
-                                <label for="register-major" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-graduation-cap mr-2 text-purple-600"></i>สาขา
-                                </label>
-                                <select id="register-major" name="major" required
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
-                                    <option value="">เลือกสาขา</option>
-                                </select>
-                            </div>
-                            
-                            <div class="md:col-span-2">
-                                <label for="register-email" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-envelope mr-2 text-purple-600"></i>อีเมล
-                                </label>
-                                <input id="register-email" name="email" type="email" required 
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                    placeholder="กรอกอีเมลของคุณ">
-                            </div>
-                            
-                            <div>
-                                <label for="register-password" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-lock mr-2 text-purple-600"></i>รหัสผ่าน
-                                </label>
-                                <div class="relative">
-                                    <input id="register-password" name="password" type="password" required 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all pr-12"
-                                        placeholder="กรอกรหัสผ่าน (อย่างน้อย 6 ตัวอักษร)"
-                                        minlength="6">
-                                    <button type="button" onclick="togglePassword('register-password')" 
-                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div>
-                                <label for="register-confirm-password" class="block text-sm font-medium text-gray-700 mb-2">
-                                    <i class="fas fa-lock mr-2 text-purple-600"></i>ยืนยันรหัสผ่าน
-                                </label>
-                                <div class="relative">
-                                    <input id="register-confirm-password" name="confirm-password" type="password" required 
-                                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all pr-12"
-                                        placeholder="ยืนยันรหัสผ่านอีกครั้ง">
-                                    <button type="button" onclick="togglePassword('register-confirm-password')" 
-                                            class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+            
+            <!-- Slider Container -->
+            <div id="slider-container"></div>
+            
+            <!-- Calendar Section -->
+            <div id="calendar-section"></div>
+        </div>
 
-                        <div class="flex items-center">
-                            <input id="agree-terms" name="agree-terms" type="checkbox" required
-                                class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
-                            <label for="agree-terms" class="ml-2 block text-sm text-gray-700">
-                                ฉันยอมรับ <a href="#" class="text-purple-600 hover:text-purple-500">ข้อกำหนดและเงื่อนไข</a> 
-                                และ <a href="#" class="text-purple-600 hover:text-purple-500">นโยบายความเป็นส่วนตัว</a>
-                            </label>
-                        </div>
+        <!-- ============================================
+            CLUBS PAGE
+            ============================================ -->
+        <div id="clubs-page" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">📋 รายชื่อชมรม</h1>
+        
+                <!-- Category Filter -->
+                <div id="club-filters" class="flex flex-wrap justify-center gap-4 mb-8"></div>
 
-                        <div>
-                            <button type="submit"
-                                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all">
-                                <i class="fas fa-user-plus mr-2"></i>
-                                สมัครสมาชิก
-                            </button>
-                        </div>
+                <!-- Clubs Grid -->
+                <div id="clubs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </div>
+        </div>
 
-                        <div class="text-center">
-                            <p class="text-sm text-gray-600">
-                                มีบัญชีอยู่แล้ว?
-                                <button type="button" onclick="showPage('login')"
-                                        class="font-medium text-purple-600 hover:text-purple-500">
-                                    เข้าสู่ระบบที่นี่
-                                </button>
-                            </p>
-                        </div>
-                    </form>
+        <!-- ============================================
+            ACTIVITIES PAGE
+            ============================================ -->
+        <div id="activities-page" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">🎯 กิจกรรม</h1>
+                <!-- Activity Sections -->
+                <div class="space-y-12">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-6 text-green-600 flex items-center">
+                            <i class="fas fa-door-open mr-3"></i>กิจกรรมที่เปิดรับสมัคร
+                        </h2>
+                        <div id="open-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold mb-6 text-orange-600 flex items-center">
+                            <i class="fas fa-clock mr-3"></i>กิจกรรมที่ใกล้ปิดรับสมัคร
+                        </h2>
+                        <div id="closing-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-2xl font-bold mb-6 text-gray-600 flex items-center">
+                            <i class="fas fa-door-closed mr-3"></i>กิจกรรมที่ปิดรับสมัครแล้ว
+                        </h2>
+                        <div id="closed-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Modal for Activity Registration -->
-    <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 class="text-2xl font-bold mb-4">สมัครกิจกรรม</h3>
-            <div id="modal-content"></div>
-            <div class="flex gap-4 mt-6">
-                <button onclick="closeModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg transition-colors">
-                    ยกเลิก
-                </button>
-                <button onclick="confirmRegistration()" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    ยืนยันการสมัคร
-                </button>
+        <!-- ============================================
+            MODALS
+            ============================================ -->
+        <!-- Registration Modal -->
+        <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto shadow-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">สมัครเข้าร่วมกิจกรรม</h3>
+                    <button onclick="Modals.closeRegistration()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <div id="registration-content"></div>
             </div>
         </div>
 
-    <!-- Modal for Activity Registration -->
-    <div id="registration-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 class="text-2xl font-bold mb-4">สมัครกิจกรรม</h3>
-            <div id="modal-content"></div>
-            <div class="flex gap-4 mt-6">
-                <button onclick="closeModal()" class="flex-1 bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg transition-colors">
-                    ยกเลิก
-                </button>
-                <button onclick="confirmRegistration()" class="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    ยืนยันการสมัคร
-                </button>
+        <!-- Login Modal -->
+        <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+                <!-- Tab Navigation -->
+                <div class="flex mb-6 bg-gray-100 rounded-lg p-1">
+                    <button id="login-tab-btn" onclick="Auth.switchTab('login')" 
+                            class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white">
+                        เข้าสู่ระบบ
+                    </button>
+                    <button id="register-tab-btn" onclick="Auth.switchTab('register')" 
+                            class="flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-800">
+                        สมัครสมาชิก
+                    </button>
+                </div>
+
+                <!-- Login Tab Content -->
+                <div id="login-tab" class="auth-tab"></div>
+
+                <!-- Register Tab Content -->
+                <div id="register-tab" class="auth-tab hidden"></div>
             </div>
         </div>
-    </div>
 
-    <script src="data.js"></script>
-    <script src="script.js"></script>
-</body>
+        <!-- ============================================
+            SCRIPTS
+            ============================================ -->
+        <!-- Configuration & Data -->
+        <script src="js/config/data.js"></script>
+        
+        <!-- Utilities -->
+        <script src="js/utils/helpers.js"></script>
+        <script src="js/utils/validators.js"></script>
+        <script src="js/utils/notifications.js"></script>
+        <script>
+            // Initialize notifications after other components
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    NotificationSystem.init();
+                }, 1000);
+            });
+        </script>
+        
+        <!-- Components -->
+        <script src="js/components/slider.js"></script>
+        <script src="js/components/calendar.js"></script>
+        <script src="js/components/modals.js"></script>
+        
+        <!-- Pages -->
+        <script src="js/pages/home.js"></script>
+        <script src="js/pages/clubs.js"></script>
+        <script src="js/pages/activities.js"></script>
+        
+        <!-- Authentication -->
+        <script src="js/auth/auth.js"></script>
+        
+        <!-- Main App -->
+        <script src="js/app.js"></script>
+    </body>
 </html>
