@@ -29,42 +29,44 @@ const Calendar = {
         }
 
         container.innerHTML = `
-            <div class="max-w-7xl mx-auto px-4 py-16">
-                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">📅 ปฏิทินกิจกรรม</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- ปฏิทินขนาดเล็ก -->
-                    <div class="lg:col-span-1">
-                        <div class="bg-white rounded-2xl shadow-xl p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <button onclick="Calendar.changeMonth(-1)" class="p-2 hover:bg-gray-100 rounded-lg">
-                                    <i class="fas fa-chevron-left text-gray-600"></i>
-                                </button>
-                                <h3 id="calendar-month" class="text-xl font-semibold text-gray-800"></h3>
-                                <button onclick="Calendar.changeMonth(1)" class="p-2 hover:bg-gray-100 rounded-lg">
-                                    <i class="fas fa-chevron-right text-gray-600"></i>
-                                </button>
-                            </div>
-                            <div id="calendar-grid" class="grid grid-cols-7 gap-1"></div>
+            <div class="space-y-4">
+                <!-- Mini Calendar Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 bg-gradient-to-r from-indigo-50/70 to-pink-50/70">
+                        <div class="flex items-center">
+                            <i class="fas fa-calendar-alt text-indigo-400 mr-2"></i>
+                            <span class="font-bold text-gray-700 text-sm">ปฏิทิน</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="Calendar.changeMonth(-1)" class="w-7 h-7 flex items-center justify-center hover:bg-white rounded-md transition-colors">
+                                <i class="fas fa-chevron-left text-gray-400 hover:text-indigo-500 text-xs"></i>
+                            </button>
+                            <span id="calendar-month" class="text-xs font-medium text-gray-600 min-w-[100px] text-center"></span>
+                            <button onclick="Calendar.changeMonth(1)" class="w-7 h-7 flex items-center justify-center hover:bg-white rounded-md transition-colors">
+                                <i class="fas fa-chevron-right text-gray-400 hover:text-indigo-500 text-xs"></i>
+                            </button>
                         </div>
                     </div>
-                    
-                    <!-- รายการกิจกรรมล่าสุด -->
-                    <div class="lg:col-span-2">
-                        <div class="bg-white rounded-2xl shadow-xl p-6">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-xl font-bold text-gray-800">
-                                    <i class="fas fa-calendar-check text-blue-600 mr-2"></i>
-                                    กิจกรรมล่าสุด
-                                </h3>
-                                <button onclick="Navigation.showPage('activities')" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                                    ดูทั้งหมด <i class="fas fa-arrow-right ml-1"></i>
-                                </button>
+                    <div class="p-3">
+                        <div id="calendar-grid" class="grid grid-cols-7 gap-0.5"></div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities Card -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-7 h-7 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg flex items-center justify-center mr-2">
+                                <i class="fas fa-bolt text-white text-xs"></i>
                             </div>
-                            
-                            <div id="recent-activities" class="space-y-6 max-h-96 overflow-y-auto">
-                                <!-- กิจกรรมจะแสดงที่นี่ -->
-                            </div>
+                            <span class="font-bold text-gray-700 text-sm">กิจกรรมล่าสุด</span>
                         </div>
+                        <button onclick="Navigation.showPage('activities')" class="text-indigo-400 hover:text-indigo-500 text-xs font-medium">
+                            ดูทั้งหมด →
+                        </button>
+                    </div>
+                    <div id="recent-activities" class="p-3 space-y-2 max-h-[300px] overflow-y-auto custom-scrollbar">
+                        <!-- กิจกรรมจะแสดงที่นี่ -->
                     </div>
                 </div>
             </div>
@@ -94,9 +96,10 @@ const Calendar = {
         gridElement.innerHTML = '';
 
         // Render day headers
-        dayHeaders.forEach(day => {
+        dayHeaders.forEach((day, index) => {
             const header = document.createElement('div');
-            header.className = 'text-center font-semibold text-gray-600 py-2';
+            const isWeekend = index === 0 || index === 6; // Sunday or Saturday
+            header.className = `text-center font-medium py-1 text-[10px] ${isWeekend ? 'text-pink-400' : 'text-gray-500'}`;
             header.textContent = day;
             gridElement.appendChild(header);
         });
@@ -123,27 +126,26 @@ const Calendar = {
      */
     createDayElement(day) {
         const dayElement = document.createElement('div');
-        dayElement.className = 'calendar-day text-center py-2 cursor-pointer rounded-lg relative';
+        dayElement.className = 'calendar-day';
 
         const dateStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
         const dayActivities = activitiesData.filter(activity => activity.date === dateStr);
 
-        if (dayActivities.length > 0) {
-            dayElement.classList.add('bg-blue-100', 'text-blue-800', 'font-semibold', 'hover:bg-blue-200');
-            dayElement.innerHTML = `
-                <div class="font-bold">${day}</div>
-                <div class="text-xs mt-1">
-                    ${dayActivities.map(activity => `
-                        <div class="bg-blue-600 text-white px-1 py-0.5 rounded text-xs mb-1 truncate"
-                             onclick="event.stopPropagation(); ActivitiesPage.showActivityDetails(${activity.id})"
-                             title="${activity.name}">
-                            ${Helpers.truncateText(activity.name, 10)}
-                        </div>
-                    `).join('')}
-                </div>
-            `;
+        // Check if this is today
+        const today = new Date();
+        const isToday = today.getFullYear() === this.currentYear &&
+                       today.getMonth() === this.currentMonth &&
+                       today.getDate() === day;
+
+        if (isToday) {
+            dayElement.classList.add('today');
+            dayElement.textContent = day;
+        } else if (dayActivities.length > 0) {
+            dayElement.classList.add('has-activity');
+            dayElement.innerHTML = `<span class="text-indigo-500 font-medium">${day}</span>`;
             dayElement.onclick = () => this.showDayActivities(dateStr);
         } else {
+            dayElement.classList.add('text-gray-600', 'hover:text-indigo-500');
             dayElement.textContent = day;
         }
 
@@ -200,9 +202,12 @@ const Calendar = {
 
         if (recentActivities.length === 0) {
             container.innerHTML = `
-                <div class="text-center py-8 text-gray-500">
-                    <i class="fas fa-calendar-times text-4xl mb-4"></i>
-                    <p>ยังไม่มีกิจกรรมที่กำลังจะมาถึง</p>
+                <div class="text-center py-10 text-gray-500">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-calendar-times text-3xl text-gray-400"></i>
+                    </div>
+                    <p class="font-medium">ยังไม่มีกิจกรรมที่กำลังจะมาถึง</p>
+                    <p class="text-sm text-gray-400 mt-1">ติดตามกิจกรรมใหม่ๆ ได้เร็วๆ นี้</p>
                 </div>
             `;
             return;
@@ -213,78 +218,35 @@ const Calendar = {
             const statusConfig = Helpers.getActivityStatusConfig(activity.status);
             const isUpcoming = daysLeft >= 0 && daysLeft <= 7;
 
+            // Status colors
+            const statusColors = {
+                open: 'border-l-emerald-500 bg-emerald-50/50',
+                closing: 'border-l-amber-500 bg-amber-50/50',
+                closed: 'border-l-gray-400 bg-gray-50/50'
+            };
+
             return `
-                <div class="bg-white border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-all duration-300 ${isUpcoming ? 'ring-2 ring-blue-200 bg-blue-50' : ''}">
-                    <!-- Header -->
-                    <div class="flex items-start justify-between mb-4">
-                        <div class="flex-1">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                                    ${index + 1}
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-lg text-gray-900">${activity.name}</h4>
-                                    <p class="text-sm text-gray-600">${activity.club}</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="flex flex-col items-end gap-2">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${statusConfig.bgColor} ${statusConfig.textColor}">
-                                <i class="fas fa-circle mr-1 text-xs"></i>
-                                ${statusConfig.text}
+                <div class="border-l-2 ${statusColors[activity.status] || statusColors.open} rounded-r-lg p-2.5 hover:shadow-sm transition-all cursor-pointer" onclick="ActivitiesPage.showActivityDetails(${activity.id})">
+                    <div class="flex items-start justify-between mb-1">
+                        <h4 class="font-medium text-gray-800 text-xs line-clamp-1 flex-1">${activity.name}</h4>
+                        <span class="text-[10px] px-1.5 py-0.5 rounded ${statusConfig.bgColor} ${statusConfig.textColor} ml-2 flex-shrink-0">
+                            ${statusConfig.text}
+                        </span>
+                    </div>
+                    <p class="text-[10px] text-gray-500 mb-1.5">${activity.club}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2 text-[10px] text-gray-500">
+                            <span><i class="fas fa-calendar-day mr-1 text-indigo-400"></i>${Helpers.formatDate(activity.date)}</span>
+                            <span class="${daysLeft <= 3 ? 'text-pink-500 font-medium' : ''}">
+                                ${daysLeft === 0 ? '🔥 วันนี้' : daysLeft === 1 ? '⚡ พรุ่งนี้' : daysLeft > 0 ? `${daysLeft} วัน` : 'จบแล้ว'}
                             </span>
-                            ${isUpcoming ? `
-                                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                    <i class="fas fa-fire mr-1"></i>ใกล้เข้า!
-                                </span>
-                            ` : ''}
                         </div>
-                    </div>
-                    
-                    <!-- Details -->
-                    <div class="bg-gray-50 rounded-lg p-4 mb-4">
-                        <p class="text-gray-700 text-sm mb-3">${activity.description}</p>
-                        
-                        <div class="grid grid-cols-2 gap-4 text-sm">
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-calendar-day w-4 text-center mr-3 text-blue-600"></i>
-                                <div>
-                                    <div class="font-medium">วันที่จัด</div>
-                                    <div class="text-gray-900">${Helpers.formatDate(activity.date)}</div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex items-center text-gray-600">
-                                <i class="fas fa-hourglass-half w-4 text-center mr-3 text-purple-600"></i>
-                                <div>
-                                    <div class="font-medium">เหลือเวลา</div>
-                                    <div class="text-gray-900 font-semibold">
-                                        ${daysLeft === 0 ? '🔥 วันนี้!' :
-                                        daysLeft === 1 ? '⚡ พรุ่งนี้' :
-                                        daysLeft > 0 ? `${daysLeft} วัน` : 'ผ่านไปแล้ว'}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Actions -->
-                    <div class="flex gap-3">
                         ${activity.status !== 'closed' ? `
-                            <button onclick="Modals.handleRegistrationClick(${activity.id})"
-                                    class="flex-1 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white py-3 px-4 rounded-lg transition-all font-medium text-sm">
-                                <i class="fas fa-user-plus mr-2"></i>สมัครเข้าร่วม
+                            <button onclick="event.stopPropagation(); Modals.handleRegistrationClick(${activity.id})"
+                                    class="text-[10px] bg-indigo-400 hover:bg-indigo-500 text-white px-2 py-1 rounded font-medium">
+                                สมัคร
                             </button>
-                        ` : `
-                            <button disabled class="flex-1 bg-gray-300 text-gray-500 py-3 px-4 rounded-lg cursor-not-allowed font-medium text-sm">
-                                <i class="fas fa-lock mr-2"></i>ปิดรับแล้ว
-                            </button>
-                        `}
-                        <button onclick="ActivitiesPage.showActivityDetails(${activity.id})"
-                                class="px-4 py-3 border-2 border-gray-300 hover:border-gray-400 text-gray-700 rounded-lg transition-all font-medium text-sm">
-                            <i class="fas fa-info-circle mr-1"></i>รายละเอียด
-                        </button>
+                        ` : ''}
                     </div>
                 </div>
             `;

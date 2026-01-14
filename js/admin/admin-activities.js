@@ -322,6 +322,9 @@ const AdminActivities = {
             showSuccess('เพิ่มกิจกรรมเรียบร้อยแล้ว');
         }
 
+        // บันทึกลง localStorage
+        localStorage.setItem('activities_data', JSON.stringify(activitiesData));
+
         closeModal('activity-modal');
         this.renderActivitiesTable();
     },
@@ -343,12 +346,15 @@ const AdminActivities = {
         const index = this.activities.findIndex(a => a.id === activityId);
         if (index !== -1) {
             this.activities.splice(index, 1);
-            
+
             const dataIndex = activitiesData.findIndex(a => a.id === activityId);
             if (dataIndex !== -1) {
                 activitiesData.splice(dataIndex, 1);
             }
-            
+
+            // บันทึกลง localStorage
+            localStorage.setItem('activities_data', JSON.stringify(activitiesData));
+
             showSuccess('ลบกิจกรรมเรียบร้อยแล้ว');
             this.renderActivitiesTable();
         }

@@ -16,8 +16,60 @@ const HomePage = {
         console.log('🏠 Initializing Home Page...');
         this.loadSearchHistory();
         this.setupEventListeners();
-        this.showPopularSearches();
+        this.renderPopularCategories();
+        this.updateCounts();
         console.log('✅ Home Page initialized');
+    },
+
+    /**
+     * Update counts in badges
+     */
+    updateCounts() {
+        const clubsCount = document.getElementById('clubs-count-badge');
+        const activitiesCount = document.getElementById('activities-count-badge');
+
+        if (clubsCount && typeof clubsData !== 'undefined') {
+            clubsCount.textContent = `${clubsData.length} ชมรม`;
+        }
+        if (activitiesCount && typeof activitiesData !== 'undefined') {
+            activitiesCount.textContent = `${activitiesData.length} กิจกรรม`;
+        }
+    },
+
+    /**
+     * Render Popular Categories
+     */
+    renderPopularCategories() {
+        const container = document.getElementById('popular-categories');
+        if (!container) return;
+
+        const categories = [
+            { id: 'sports', icon: '⚽', name: 'กีฬา', color: 'emerald' },
+            { id: 'music', icon: '🎵', name: 'ดนตรี', color: 'blue' },
+            { id: 'art', icon: '🎨', name: 'ศิลปะ', color: 'purple' },
+            { id: 'academic', icon: '📚', name: 'วิชาการ', color: 'indigo' },
+            { id: 'volunteer', icon: '🤝', name: 'อาสา', color: 'pink' },
+            { id: 'culture', icon: '🎭', name: 'วัฒนธรรม', color: 'amber' }
+        ];
+
+        container.innerHTML = categories.map(cat => `
+            <button onclick="HomePage.filterByCategory('${cat.id}')" class="category-card">
+                <span class="category-icon">${cat.icon}</span>
+                <span class="category-name">${cat.name}</span>
+            </button>
+        `).join('');
+    },
+
+    /**
+     * Filter by Category - Navigate to clubs page with filter
+     */
+    filterByCategory(categoryId) {
+        Navigation.showPage('clubs');
+        setTimeout(() => {
+            if (typeof ClubsPage !== 'undefined' && ClubsPage.filterByCategory) {
+                ClubsPage.filterByCategory(categoryId);
+            }
+        }, 100);
     },
 
     /**
@@ -56,37 +108,6 @@ const HomePage = {
         localStorage.setItem('clubSearchHistory', JSON.stringify(this.searchHistory));
     },
 
-    /**
-     * Show Popular Searches
-     */
-    showPopularSearches() {
-        const popularSearches = [
-            { term: 'กีฬา', icon: '⚽', color: 'green' },
-            { term: 'ดนตรี', icon: '🎵', color: 'blue' },
-            { term: 'เทคโนโลยี', icon: '💻', color: 'indigo' },
-            { term: 'ศิลปะ', icon: '🎨', color: 'purple' },
-            { term: 'วัฒนธรรมใต้', icon: '🎭', color: 'pink' },
-            { term: 'อาสาสมัคร', icon: '🤝', color: 'red' }
-        ];
-
-        const container = document.createElement('div');
-        container.className = 'mt-4 flex flex-wrap gap-2 justify-center';
-        container.innerHTML = `
-            <span class="text-white/70 text-sm mr-2">คำค้นหายอดนิยม:</span>
-            ${popularSearches.map(search => `
-                <button onclick="HomePage.quickSearch('${search.term}')" 
-                        class="bg-${search.color}-500/30 hover:bg-${search.color}-500/50 text-white text-sm px-3 py-1 rounded-full transition-colors border border-white/20">
-                    ${search.icon} ${search.term}
-                </button>
-            `).join('')}
-        `;
-
-        const aiGlow = document.querySelector('.ai-glow');
-        if (aiGlow && !document.getElementById('popular-searches')) {
-            container.id = 'popular-searches';
-            aiGlow.appendChild(container);
-        }
-    },
 
     /**
      * Quick Search

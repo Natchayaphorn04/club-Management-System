@@ -1,24 +1,38 @@
 /* ===========================================
-   ANIMATIONS
+   ANIMATIONS - Blue & Pink Theme
    =========================================== */
 
-/* AI Glow Animation */
+/* AI Glow Animation - Blue to Pink */
 .ai-glow {
     animation: glow 2s ease-in-out infinite alternate;
 }
 
 @keyframes glow {
     from {
-        box-shadow: 0 0 20px #667eea;
+        box-shadow: 0 0 20px rgba(79, 70, 229, 0.5), 0 0 40px rgba(79, 70, 229, 0.3);
     }
     to {
-        box-shadow: 0 0 30px #764ba2;
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.5), 0 0 50px rgba(236, 72, 153, 0.3);
+    }
+}
+
+/* Gradient Glow Animation */
+.gradient-glow {
+    animation: gradientGlow 3s ease-in-out infinite;
+}
+
+@keyframes gradientGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(79, 70, 229, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(236, 72, 153, 0.4);
     }
 }
 
 /* Fade In Animation */
 .fade-in {
-    animation: fadeIn 0.5s ease-in;
+    animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes fadeIn {
@@ -32,11 +46,43 @@
     }
 }
 
+/* Fade In Up */
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scale In Animation */
+.scale-in {
+    animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
 /* Modal Slide In */
 @keyframes modalSlideIn {
     from {
         opacity: 0;
-        transform: scale(0.9) translateY(-10px);
+        transform: scale(0.9) translateY(-20px);
     }
     to {
         opacity: 1;
@@ -45,8 +91,24 @@
 }
 
 #registration-modal .bg-white,
-#login-modal .bg-white {
+#login-modal .bg-white,
+#club-modal .bg-white,
+#activity-modal .bg-white {
     animation: modalSlideIn 0.3s ease-out;
+}
+
+/* Modal Backdrop Fade */
+.modal-overlay {
+    animation: backdropFade 0.2s ease-out;
+}
+
+@keyframes backdropFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Spin Animation */
@@ -60,13 +122,29 @@
 @keyframes pulse {
     0%, 100% {
         opacity: 1;
+        transform: scale(1);
     }
     50% {
         opacity: 0.7;
+        transform: scale(1.05);
     }
 }
 
-/* Slide Animation */
+/* Subtle Pulse */
+.pulse-subtle {
+    animation: pulseSubtle 2s ease-in-out infinite;
+}
+
+@keyframes pulseSubtle {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* Slide Animations */
 @keyframes slideIn {
     from {
         transform: translateX(-100%);
@@ -76,30 +154,6 @@
     }
 }
 
-/* Bounce Animation */
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-/* Shake Animation */
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
-    10%, 30%, 50%, 70%, 90% {
-        transform: translateX(-5px);
-    }
-    20%, 40%, 60%, 80% {
-        transform: translateX(5px);
-    }
-}
-
-/* Slide In/Out Animations */
 @keyframes slideInRight {
     from {
         transform: translateX(100%);
@@ -122,12 +176,58 @@
     }
 }
 
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .animate-slideInRight {
     animation: slideInRight 0.3s ease-out;
 }
 
 .animate-slideOutRight {
     animation: slideOutRight 0.3s ease-in;
+}
+
+.animate-slideInLeft {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bounce {
+    animation: bounce 1s ease-in-out infinite;
+}
+
+/* Shake Animation */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
 }
 
 /* Bell Ring Animation */
@@ -139,4 +239,174 @@
 
 .notification-bell-ring {
     animation: bellRing 0.5s ease-in-out;
+}
+
+/* Float Animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Ripple Effect */
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    animation: ripple 0.6s linear;
+}
+
+/* Gradient Shift Animation */
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.gradient-animate {
+    background: linear-gradient(135deg, #4F46E5, #7C3AED, #EC4899, #4F46E5);
+    background-size: 300% 300%;
+    animation: gradientShift 4s ease infinite;
+}
+
+/* Rotate Animation */
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.rotate {
+    animation: rotate 2s linear infinite;
+}
+
+/* Skeleton Loading */
+@keyframes skeleton {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200px 100%;
+    animation: skeleton 1.5s infinite;
+}
+
+/* Notification Slide */
+@keyframes notificationSlide {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.notification-enter {
+    animation: notificationSlide 0.3s ease-out;
+}
+
+/* Card Hover Effect */
+@keyframes cardHoverGlow {
+    0% {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    100% {
+        box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1), 0 10px 10px -5px rgba(236, 72, 153, 0.04);
+    }
+}
+
+/* Typing Animation */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+.typing-effect {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid #4F46E5;
+    animation: typing 3s steps(30, end), blink 0.75s step-end infinite;
+}
+
+/* Dark Mode Adjustments */
+@media (prefers-color-scheme: dark) {
+    @keyframes glow {
+        from {
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.6), 0 0 60px rgba(79, 70, 229, 0.4);
+        }
+        to {
+            box-shadow: 0 0 40px rgba(236, 72, 153, 0.6), 0 0 70px rgba(236, 72, 153, 0.4);
+        }
+    }
+
+    .skeleton {
+        background: linear-gradient(90deg, #2d2d2d 25%, #3d3d3d 50%, #2d2d2d 75%);
+        background-size: 200px 100%;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }

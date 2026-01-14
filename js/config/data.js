@@ -16,16 +16,16 @@ const clubsData = [
         history: "ชมรมกีฬาการต่อสู้และป้องกันตัวเป็นชมรมที่มุ่งเน้นการพัฒนาทักษะการป้องกันตัวและศิลปะการต่อสู้ ก่อตั้งมาแล้ว 6 ปี โดยเปิดสอนวิชา Judo และ Jiu-Jitsu ให้กับสมาชิกตั้งแต่ผู้เริ่มต้นจนถึงผู้มีประสบการณ์ กิจกรรมและการฝึกซ้อมฝึกซ้อมเทคนิคพื้นฐานและขั้นสูงของ เรียนรู้หลักการป้องกันตัวในสถานการณ์จริง และพัฒนาสมรรถภาพทางกายและความแข็งแกร่งของร่างกาย ภายในชมรมมีการจัดส่งสมาชิกเข้าร่วมการแข่งขันในหลากหลายระดับ",
         logo: "loads/images/club-logos/club-1.jpg",
         contact: {
-            facebook: "MusicClubUni",
-            instagram: "@musicclub_uni",
-            line: "@musicclub"
+            facebook: "FightClubSSRU",
+            instagram: "@fightclub_ssru",
+            line: "@fightclub_ssru"
         },
         pastActivities: [
-            "คอนเสิร์ตดนตรีประจำปี 2023",
-            "การแสดงดนตรีคลาสสิก",
-            "Workshop การเล่นกีตาร์",
-            "การประกวดร้องเพลงสากล",
-            "งานแสดงดนตรีจาซ"
+            "การแข่งขัน Judo ระดับมหาวิทยาลัย 2023",
+            "Workshop การป้องกันตัวเบื้องต้น",
+            "ค่ายฝึกซ้อม Jiu-Jitsu",
+            "การแข่งขันศิลปะการต่อสู้แบบผสม",
+            "กิจกรรมออกกำลังกายเพื่อสุขภาพ"
         ]
     },
     {
@@ -33,20 +33,20 @@ const clubsData = [
         name: "ชมรมคนใต้ SSRU",
         category: "culture",
         type: "central",
-        description: "ชมรมกีฬาฟุตบอลที่เปิดโอกาสให้นักศึกษาได้พัฒนาทักษะและสร้างมิตรภาพ",
-        history: "เป็นหนึ่งในชมรมเก่าแก่ที่สุดของมหาวิทยาลัย ก่อตั้งมาตั้งแต่ปี 1995",
+        description: "ชมรมสำหรับนักศึกษาชาวใต้ที่ต้องการแลกเปลี่ยนวัฒนธรรมและสร้างสายสัมพันธ์",
+        history: "ชมรมคนใต้ SSRU เป็นชมรมที่รวบรวมนักศึกษาชาวภาคใต้ที่มาศึกษาต่อในกรุงเทพฯ เพื่อแลกเปลี่ยนวัฒนธรรม สร้างสายสัมพันธ์ และช่วยเหลือซึ่งกันและกัน",
         logo: "loads/images/club-logos/club-2.jpg",
         contact: {
-            facebook: "FootballClubUni",
-            instagram: "@football_uni",
-            line: "@footballclub"
+            facebook: "ชมรมคนใต้SSRU",
+            instagram: "@kontai_ssru",
+            line: "@kontai_ssru"
         },
         pastActivities: [
-            "แข่งขันฟุตบอลระหว่างคณะ 2023",
-            "ทัวร์นาเมนต์ฟุตบอล 7 คน",
-            "การแข่งขันกับมหาวิทยาลัยอื่น",
-            "ค่ายฝึกซ้อมฟุตบอล",
-            "กิจกรรมแฟนคลับเชียร์บอลโลก"
+            "งานวันรวมพลคนใต้ 2023",
+            "กิจกรรมแลกเปลี่ยนวัฒนธรรมภาคใต้",
+            "งานอาหารพื้นบ้านภาคใต้",
+            "ทริปกลับบ้านช่วงปิดเทอม",
+            "กิจกรรมพี่พบน้องใหม่ชาวใต้"
         ]
     },
     {
@@ -532,7 +532,7 @@ const clubsData = [
         ]
     },
         {
-        id: 25,
+        id: 26,
         name: "ชมรมสื่อสร้างสรรค์",
         category: "volunteer",
         type: "central",     // ส่วนกลาง
@@ -666,3 +666,32 @@ window.monthNames = monthNames;
 window.dayHeaders = dayHeaders;
 window.categoryConfig = categoryConfig;
 window.typeConfig = typeConfig;
+
+// โหลดข้อมูลจาก localStorage ถ้ามี (สำหรับข้อมูลที่ admin แก้ไข)
+(function initDataFromStorage() {
+    // โหลด clubs ที่ถูกแก้ไข
+    const storedClubs = localStorage.getItem('clubs_data');
+    if (storedClubs) {
+        try {
+            const parsed = JSON.parse(storedClubs);
+            clubsData.length = 0;
+            parsed.forEach(club => clubsData.push(club));
+            console.log('✅ Loaded clubs from localStorage');
+        } catch (e) {
+            console.error('❌ Error loading clubs from localStorage:', e);
+        }
+    }
+
+    // โหลด activities ที่ถูกแก้ไข
+    const storedActivities = localStorage.getItem('activities_data');
+    if (storedActivities) {
+        try {
+            const parsed = JSON.parse(storedActivities);
+            activitiesData.length = 0;
+            parsed.forEach(activity => activitiesData.push(activity));
+            console.log('✅ Loaded activities from localStorage');
+        } catch (e) {
+            console.error('❌ Error loading activities from localStorage:', e);
+        }
+    }
+})();

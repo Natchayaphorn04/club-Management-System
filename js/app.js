@@ -95,6 +95,10 @@ const App = {
         if (typeof ActivitiesPage !== 'undefined') {
             ActivitiesPage.init();
         }
+
+        if (typeof MyRegistrationsPage !== 'undefined') {
+            MyRegistrationsPage.init();
+        }
     },
 
     /**
@@ -230,6 +234,11 @@ const Navigation = {
         // Refresh page content if needed
         if (pageId === 'home' && typeof HomePage !== 'undefined') {
             HomePage.refresh();
+        }
+
+        // Refresh my registrations page
+        if (pageId === 'my-registrations' && typeof MyRegistrationsPage !== 'undefined') {
+            MyRegistrationsPage.render();
         }
     }
 };

@@ -149,13 +149,29 @@ const Modals = {
 
         const currentUser = App.getState('currentUser');
         if (!currentUser) return;
-        // แจ้งเตือนแบบเดิม
+
+        // ใช้ RegistrationService บันทึกการสมัคร
+        const result = RegistrationService.register(this.selectedActivity.id, {
+            studentId: currentUser.studentId,
+            fullName: currentUser.fullName,
+            email: currentUser.email,
+            phone: currentUser.phone,
+            faculty: currentUser.faculty,
+            major: currentUser.major
+        });
+
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+
+        // แจ้งเตือนสำเร็จ
         alert(`สมัครกิจกรรม "${this.selectedActivity.name}" เรียบร้อยแล้ว!\n\nชื่อ: ${currentUser.fullName}\nรหัสนักศึกษา: ${currentUser.studentId}\nเบอร์โทร: ${currentUser.phone}\n\nทางชมรมจะติดต่อกลับภายใน 3 วันทำการ`);
-        
+
         this.closeRegistration();
-        
+
         // Show success notification
-        if (typeof Helpers !== 'undefined') {
+        if (typeof NotificationSystem !== 'undefined') {
             NotificationSystem.notifyActivityRegistration(this.selectedActivity.name);
         }
         if (typeof Helpers !== 'undefined') {

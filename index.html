@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="css/components.css">
         <link rel="stylesheet" href="css/animations.css">
         <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="css/forms.css">
     </head>
 
     <body class="bg-gray-50">
@@ -57,8 +58,11 @@
                                     </div>
                                     <span id="user-greeting" class="text-sm font-medium"></span>
                                 </div>
+                                <button onclick="Navigation.showPage('my-registrations')" class="text-white hover:text-yellow-300 transition-colors font-medium text-sm">
+                                    <i class="fas fa-clipboard-list mr-1"></i>ประวัติ
+                                </button>
                                 <button onclick="Auth.logout()" class="text-white hover:text-yellow-300 transition-colors font-medium text-sm">
-                                    <i class="fas fa-sign-out-alt mr-1"></i>ออกจากระบบ
+                                    <i class="fas fa-sign-out-alt mr-1"></i>ออก
                                 </button>
                             </div>
                         </div>
@@ -74,38 +78,119 @@
             HOME PAGE
             ============================================ -->
         <div id="home-page" class="page">
-            <!-- Hero Section -->
-            <div class="gradient-bg text-white py-20">
-                <div class="max-w-7xl mx-auto px-4 text-center">
-                    <h1 class="text-5xl font-bold mb-6">ค้นหาชมรมที่ใช่สำหรับคุณ</h1>
-                    <p class="text-xl mb-8 opacity-90">ใช้ AI ช่วยแนะนำชมรมตามความสนใจของคุณ</p>
-            
-                    <!-- AI Club Recommendation -->
-                    <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-lg rounded-2xl p-8 ai-glow">
-                        <h3 class="text-2xl font-semibold mb-4">🤖 AI แนะนำชมรม</h3>
-                        <div class="flex gap-4">
-                            <input type="text" id="interest-input"
-                                placeholder="เช่น: ดนตรี, กีฬา, เทคโนโลยี, ศิลปะ..."
-                                class="flex-1 px-4 py-3 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-400">
-                            <button onclick="HomePage.generateRecommendations()"
-                                    class="bg-yellow-500 hover:bg-yellow-600 px-8 py-3 rounded-lg font-semibold text-gray-800 transition-colors">
-                                <i class="fas fa-magic mr-2"></i>แนะนำ
-                            </button>
-                        </div>
-                        <div id="ai-recommendations" class="mt-6 hidden">
-                            <h4 class="font-semibold mb-3">ชมรมที่แนะนำสำหรับคุณ:</h4>
-                            <div id="recommended-clubs" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+            <!-- Compact Hero with Search -->
+            <div class="hero-gradient text-white py-8 md:py-12 relative overflow-hidden">
+                <div class="absolute inset-0 overflow-hidden pointer-events-none">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-pink-500/20 rounded-full blur-3xl"></div>
+                    <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl"></div>
+                </div>
+
+                <div class="max-w-5xl mx-auto px-4 relative z-10">
+                    <div class="text-center mb-6">
+                        <h1 class="text-2xl md:text-3xl font-bold mb-2">ระบบจัดการชมรมนักศึกษา</h1>
+                        <p class="text-white/70 text-sm">ค้นหาชมรมและสมัครกิจกรรมได้ง่ายๆ</p>
+                    </div>
+
+                    <!-- Search Bar -->
+                    <div class="max-w-xl mx-auto">
+                        <div class="bg-white/10 backdrop-blur-lg rounded-xl p-4 border border-white/20">
+                            <div class="flex gap-2">
+                                <div class="flex-1 relative">
+                                    <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" id="interest-input"
+                                        placeholder="ค้นหาชมรมที่สนใจ เช่น ดนตรี, กีฬา..."
+                                        class="w-full pl-10 pr-4 py-2.5 rounded-lg text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white text-sm">
+                                </div>
+                                <button onclick="HomePage.generateRecommendations()"
+                                        class="bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 px-4 py-2.5 rounded-lg font-medium text-white text-sm transition-all whitespace-nowrap">
+                                    <i class="fas fa-magic mr-1"></i>ค้นหา
+                                </button>
+                            </div>
+                            <div id="ai-recommendations" class="mt-4 hidden">
+                                <div id="recommended-clubs" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Slider Container -->
-            <div id="slider-container"></div>
-            
-            <!-- Calendar Section -->
-            <div id="calendar-section"></div>
+
+            <!-- Quick Actions -->
+            <div class="bg-white border-b">
+                <div class="max-w-5xl mx-auto px-4 py-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <button onclick="Navigation.showPage('clubs')" class="quick-action-card group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-indigo-300 to-purple-400 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-users text-white text-lg"></i>
+                            </div>
+                            <span class="font-medium text-gray-700 text-sm">ดูชมรมทั้งหมด</span>
+                            <span class="text-xs text-gray-400" id="clubs-count-badge">25 ชมรม</span>
+                        </button>
+
+                        <button onclick="Navigation.showPage('activities')" class="quick-action-card group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-pink-300 to-rose-400 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-calendar-alt text-white text-lg"></i>
+                            </div>
+                            <span class="font-medium text-gray-700 text-sm">กิจกรรมทั้งหมด</span>
+                            <span class="text-xs text-gray-400" id="activities-count-badge">10 กิจกรรม</span>
+                        </button>
+
+                        <button onclick="scrollToCalendar()" class="quick-action-card group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-emerald-300 to-teal-400 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-calendar-check text-white text-lg"></i>
+                            </div>
+                            <span class="font-medium text-gray-700 text-sm">ปฏิทินกิจกรรม</span>
+                            <span class="text-xs text-gray-400">ดูตารางวัน</span>
+                        </button>
+
+                        <button onclick="Auth.isLoggedIn() ? Navigation.showPage('my-registrations') : Auth.showLoginModal()" class="quick-action-card group">
+                            <div class="w-12 h-12 bg-gradient-to-br from-amber-300 to-orange-400 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i class="fas fa-clipboard-list text-white text-lg"></i>
+                            </div>
+                            <span class="font-medium text-gray-700 text-sm">ประวัติการสมัคร</span>
+                            <span class="text-xs text-gray-400">กิจกรรมของฉัน</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="max-w-6xl mx-auto px-4 py-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Left: Featured Activities (2 cols) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <!-- Slider Container -->
+                        <div id="slider-container"></div>
+
+                        <!-- Popular Categories -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="font-bold text-gray-700">
+                                    <i class="fas fa-th-large text-indigo-400 mr-2"></i>หมวดหมู่ยอดนิยม
+                                </h3>
+                                <button onclick="Navigation.showPage('clubs')" class="text-indigo-400 hover:text-indigo-500 text-sm font-medium">
+                                    ดูทั้งหมด →
+                                </button>
+                            </div>
+                            <div id="popular-categories" class="grid grid-cols-3 md:grid-cols-6 gap-2">
+                                <!-- Will be rendered by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Calendar & Recent (1 col) -->
+                    <div class="space-y-6">
+                        <!-- Mini Calendar -->
+                        <div id="calendar-section"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <script>
+            function scrollToCalendar() {
+                document.getElementById('calendar-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        </script>
 
         <!-- ============================================
             CLUBS PAGE
@@ -151,6 +236,18 @@
                         <div id="closed-activities" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+            MY REGISTRATIONS PAGE
+            ============================================ -->
+        <div id="my-registrations-page" class="page hidden">
+            <div class="max-w-7xl mx-auto px-4 py-8">
+                <h1 class="text-4xl font-bold text-center mb-8 text-gray-800">
+                    <i class="fas fa-clipboard-list mr-3"></i>ประวัติการสมัครกิจกรรม
+                </h1>
+                <div id="my-registrations-container"></div>
             </div>
         </div>
 
@@ -212,16 +309,20 @@
             });
         </script>
         
+        <!-- Services -->
+        <script src="js/services/registration-service.js"></script>
+
         <!-- Components -->
         <script src="js/components/slider.js"></script>
         <script src="js/components/calendar.js"></script>
         <script src="js/components/modals.js"></script>
-        
+
         <!-- Pages -->
         <script src="js/pages/home.js"></script>
         <script src="js/pages/clubs.js"></script>
         <script src="js/pages/activities.js"></script>
-        
+        <script src="js/pages/my-registrations.js"></script>
+
         <!-- Authentication -->
         <script src="js/auth/auth.js"></script>
         

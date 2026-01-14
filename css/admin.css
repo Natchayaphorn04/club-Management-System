@@ -1,27 +1,50 @@
 /* ===========================================
-    ADMIN PANEL STYLES
+   ADMIN PANEL STYLES - Blue & Pink Theme
    =========================================== */
 
 /* Tab Styles */
 .tab-btn {
     position: relative;
     transition: all 0.3s ease;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #4F46E5 0%, #EC4899 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    border-radius: 3px 3px 0 0;
 }
 
 .tab-btn:hover {
-    color: #4b5563;
-    border-color: #d1d5db;
+    color: #4F46E5;
+}
+
+.tab-btn:hover::after {
+    transform: scaleX(0.5);
 }
 
 .tab-btn.active {
-    color: #2563eb;
-    border-color: #2563eb;
+    color: #4F46E5;
+    background: linear-gradient(to bottom, rgba(79, 70, 229, 0.05), transparent);
+}
+
+.tab-btn.active::after {
+    transform: scaleX(1);
 }
 
 /* Table Styles */
 table {
     border-collapse: separate;
     border-spacing: 0;
+    width: 100%;
 }
 
 table thead {
@@ -30,27 +53,95 @@ table thead {
     z-index: 10;
 }
 
+table thead th {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+    font-weight: 600;
+    color: #374151;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 2px solid rgba(79, 70, 229, 0.1);
+}
+
+table thead th:first-child {
+    border-radius: 0.75rem 0 0 0;
+}
+
+table thead th:last-child {
+    border-radius: 0 0.75rem 0 0;
+}
+
 table tbody tr {
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 table tbody tr:hover {
-    background-color: #f9fafb;
+    background: linear-gradient(90deg, rgba(79, 70, 229, 0.02) 0%, rgba(236, 72, 153, 0.02) 100%);
+}
+
+table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Table Actions */
+.table-action-btn {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.table-action-btn:hover {
+    transform: scale(1.1);
+}
+
+.table-action-btn.edit {
+    color: #4F46E5;
+    background: rgba(79, 70, 229, 0.1);
+}
+
+.table-action-btn.edit:hover {
+    background: #4F46E5;
+    color: white;
+}
+
+.table-action-btn.delete {
+    color: #EF4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.table-action-btn.delete:hover {
+    background: #EF4444;
+    color: white;
+}
+
+.table-action-btn.view {
+    color: #10B981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.table-action-btn.view:hover {
+    background: #10B981;
+    color: white;
 }
 
 /* Modal Styles */
 .modal-overlay {
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
 }
 
-/* Loading Spinner */
+/* Admin Loading Spinner */
 .loading {
     display: inline-block;
     width: 24px;
     height: 24px;
-    border: 3px solid rgba(59, 130, 246, 0.3);
+    border: 3px solid rgba(79, 70, 229, 0.2);
     border-radius: 50%;
-    border-top-color: #3b82f6;
+    border-top-color: #4F46E5;
+    border-right-color: #EC4899;
     animation: spin 1s ease-in-out infinite;
 }
 
@@ -64,48 +155,234 @@ table tbody tr:hover {
 .permission-badge {
     display: inline-flex;
     align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.permission-badge.admin {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+    color: #4F46E5;
+    border: 1px solid rgba(79, 70, 229, 0.2);
+}
+
+.permission-badge.manager {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(52, 211, 153, 0.15) 100%);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Admin Stats Card */
+.admin-stats-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(79, 70, 229, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-stats-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+}
+
+.admin-stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px -10px rgba(79, 70, 229, 0.2);
+}
+
+.admin-stats-card .stats-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.admin-stats-card .stats-icon.blue {
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.15) 0%, rgba(79, 70, 229, 0.25) 100%);
+    color: #4F46E5;
+}
+
+.admin-stats-card .stats-icon.pink {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.15) 0%, rgba(236, 72, 153, 0.25) 100%);
+    color: #EC4899;
+}
+
+.admin-stats-card .stats-icon.green {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.25) 100%);
+    color: #10B981;
+}
+
+.admin-stats-card .stats-icon.purple {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.25) 100%);
+    color: #8B5CF6;
+}
+
+.admin-stats-card:hover .stats-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.admin-stats-card .stats-value {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #4F46E5 0%, #EC4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Admin Button Styles */
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.75rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.admin-btn-primary {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+}
+
+.admin-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.admin-btn-secondary {
+    background: white;
+    color: #4F46E5;
+    border: 2px solid rgba(79, 70, 229, 0.2);
+}
+
+.admin-btn-secondary:hover {
+    background: rgba(79, 70, 229, 0.05);
+    border-color: #4F46E5;
+}
+
+.admin-btn-danger {
+    background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.admin-btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+.admin-btn-success {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.admin-btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Admin Form Styles */
+.admin-form-group {
+    margin-bottom: 1.25rem;
+}
+
+.admin-form-label {
+    display: block;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.admin-form-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #E5E7EB;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.admin-form-input:focus {
+    outline: none;
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.admin-form-input:hover:not(:focus) {
+    border-color: #D1D5DB;
+}
+
+/* Admin Card */
+.admin-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(79, 70, 229, 0.1);
+    overflow: hidden;
+}
+
+.admin-card-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #F3F4F6;
+    background: linear-gradient(to right, rgba(79, 70, 229, 0.02), rgba(236, 72, 153, 0.02));
+}
+
+.admin-card-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1F2937;
+}
+
+.admin-card-body {
+    padding: 1.5rem;
+}
+
+/* Status Pills */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     padding: 0.25rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
 }
 
-.permission-badge.admin {
-    background-color: #dbeafe;
-    color: #1e40af;
+.status-pill.pending {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+    color: #92400E;
 }
 
-.permission-badge.manager {
-    background-color: #d1fae5;
-    color: #065f46;
+.status-pill.confirmed {
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%);
+    color: #065F46;
 }
 
-/* Stats Card */
-.stats-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.stats-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-/* Button Styles */
-.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-/* Form Styles */
-.form-input:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+.status-pill.cancelled {
+    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
+    color: #991B1B;
 }
 
 /* Responsive Tables */
@@ -114,13 +391,18 @@ table tbody tr:hover {
         overflow-x: scroll;
         -webkit-overflow-scrolling: touch;
     }
-    
+
     table {
         min-width: 600px;
     }
-    
-    .stats-card {
+
+    .admin-stats-card {
         margin-bottom: 1rem;
+    }
+
+    .tab-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
     }
 }
 
@@ -128,16 +410,79 @@ table tbody tr:hover {
 @media print {
     nav,
     button,
-    .modal-overlay {
+    .modal-overlay,
+    .admin-btn {
         display: none !important;
     }
-    
+
     table {
         page-break-inside: auto;
     }
-    
+
     tr {
         page-break-inside: avoid;
         page-break-after: auto;
+    }
+
+    .admin-card {
+        box-shadow: none;
+        border: 1px solid #E5E7EB;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    table thead th {
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+        color: #F9FAFB;
+    }
+
+    table tbody tr:hover {
+        background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, rgba(236, 72, 153, 0.05) 100%);
+    }
+
+    table tbody td {
+        border-bottom-color: #374151;
+    }
+
+    .admin-stats-card,
+    .admin-card {
+        background: #1E293B;
+        border-color: rgba(79, 70, 229, 0.2);
+    }
+
+    .admin-card-header {
+        background: linear-gradient(to right, rgba(79, 70, 229, 0.05), rgba(236, 72, 153, 0.05));
+        border-bottom-color: #374151;
+    }
+
+    .admin-form-input {
+        background: #1E293B;
+        border-color: #374151;
+        color: #F9FAFB;
+    }
+
+    .admin-form-input:focus {
+        border-color: #4F46E5;
+    }
+
+    .admin-form-label {
+        color: #F9FAFB;
+    }
+
+    .admin-btn-secondary {
+        background: #1E293B;
+        color: #818CF8;
+        border-color: rgba(79, 70, 229, 0.3);
+    }
+
+    .permission-badge.admin {
+        background: linear-gradient(135deg, rgba(79, 70, 229, 0.25) 0%, rgba(236, 72, 153, 0.25) 100%);
+        color: #A5B4FC;
+    }
+
+    .permission-badge.manager {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(52, 211, 153, 0.25) 100%);
+        color: #6EE7B7;
     }
 }

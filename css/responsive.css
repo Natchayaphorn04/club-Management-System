@@ -1,48 +1,60 @@
 /* ===========================================
-RESPONSIVE DESIGN
+   RESPONSIVE DESIGN - Blue & Pink Theme
    =========================================== */
 
 /* Tablet (768px and below) */
 @media (max-width: 768px) {
     /* Hero Section */
-    .hero-section h1 {
+    .hero-section h1,
+    .gradient-bg h1 {
         font-size: 2.5rem;
     }
-    
-    .hero-section p {
+
+    .hero-section p,
+    .gradient-bg p {
         font-size: 1.1rem;
     }
-    
+
     /* AI Glow Container */
     .ai-glow {
         padding: 1.5rem;
     }
-    
+
     /* Calendar */
     #calendar-grid {
         gap: 1px;
     }
-    
+
     .calendar-day {
         min-height: 40px;
         font-size: 0.875rem;
     }
-    
+
     /* Filter Buttons */
     .filter-btn {
         padding: 0.5rem 1rem;
         font-size: 0.875rem;
     }
-    
+
     /* Club Cards Grid */
     #clubs-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     /* Activity Cards */
     .activity-card {
         padding: 1rem;
+    }
+
+    /* Navigation */
+    nav .flex.items-center.space-x-8 {
+        gap: 0.5rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -52,62 +64,121 @@ RESPONSIVE DESIGN
     .nav-btn {
         padding: 0.5rem;
     }
-    
+
     .nav-btn i {
         margin-right: 0;
     }
-    
+
     .nav-btn span {
         display: none;
     }
-    
-    /* Hero Section */
-    .hero-section {
-        padding: 3rem 0;
-    }
-    
-    .hero-section h1 {
-        font-size: 2rem;
-    }
-    
-    .hero-section p {
+
+    /* Hide text on navigation buttons on mobile */
+    nav .text-white.text-xl {
         font-size: 1rem;
     }
-    
+
+    /* Hero Section */
+    .hero-section,
+    .gradient-bg .py-20 {
+        padding: 3rem 0;
+    }
+
+    .hero-section h1,
+    .gradient-bg h1 {
+        font-size: 1.75rem;
+    }
+
+    .hero-section p,
+    .gradient-bg p {
+        font-size: 1rem;
+    }
+
     /* AI Recommendation Input */
     #interest-input {
         padding: 0.75rem;
         font-size: 0.875rem;
     }
-    
+
+    /* AI Recommendation Container */
+    .ai-glow .flex.gap-4 {
+        flex-direction: column;
+    }
+
+    .ai-glow button {
+        width: 100%;
+    }
+
     /* Promotional Cards */
     .promotional-cards {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     /* Modal */
-    #registration-modal .bg-white,
-    #login-modal .bg-white {
+    #registration-modal > div,
+    #login-modal > div,
+    #club-modal > div,
+    #activity-modal > div {
         padding: 1.5rem;
         max-width: 95%;
+        margin: 1rem;
     }
-    
+
     /* Calendar Section */
     #calendar-section {
         padding: 1rem;
     }
-    
+
     .calendar-day {
         min-height: 35px;
         font-size: 0.75rem;
         padding: 2px;
     }
-    
+
     /* Activity Info Grid */
     .activity-info-grid {
         grid-template-columns: 1fr !important;
         gap: 0.5rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Card Padding */
+    .club-card,
+    .activity-card,
+    .stats-card {
+        padding: 1rem;
+    }
+
+    /* Page Titles */
+    .text-4xl {
+        font-size: 1.75rem !important;
+    }
+
+    /* Tab Buttons */
+    .tab-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    /* Button Adjustments */
+    .btn,
+    button {
+        padding: 0.625rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    /* Admin Navigation */
+    nav .max-w-7xl {
+        padding: 0 1rem;
+    }
+
+    #admin-info {
+        display: none;
     }
 }
 
@@ -117,14 +188,22 @@ RESPONSIVE DESIGN
     .max-w-7xl {
         max-width: 1400px;
     }
-    
+
     /* Hero Section */
-    .hero-section h1 {
+    .hero-section h1,
+    .gradient-bg h1 {
         font-size: 4rem;
     }
-    
+
     /* Club Cards - 4 columns on large screens */
     #clubs-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Activity Cards - 4 columns */
+    #open-activities,
+    #closing-activities,
+    #closed-activities {
         grid-template-columns: repeat(4, 1fr);
     }
 }
@@ -133,32 +212,69 @@ RESPONSIVE DESIGN
 @media (max-width: 480px) {
     /* Typography */
     .text-4xl {
-        font-size: 1.75rem !important;
-    }
-    
-    .text-3xl {
         font-size: 1.5rem !important;
     }
-    
-    .text-2xl {
+
+    .text-3xl {
         font-size: 1.25rem !important;
     }
-    
+
+    .text-2xl {
+        font-size: 1.125rem !important;
+    }
+
     /* Padding Adjustments */
     .px-4 {
-        padding-left: 1rem;
-        padding-right: 1rem;
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
     }
-    
-    /* Button Sizes */
-    button {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-    }
-    
+
     /* Card Padding */
-    .card-hover {
+    .card-hover,
+    .club-card,
+    .activity-card {
+        padding: 0.875rem;
+    }
+
+    /* AI Glow Container */
+    .ai-glow {
         padding: 1rem;
+        border-radius: 1rem;
+    }
+
+    .ai-glow h3 {
+        font-size: 1.25rem;
+    }
+
+    /* Navigation Logo */
+    nav .text-xl {
+        font-size: 0.875rem;
+    }
+
+    nav .text-2xl {
+        font-size: 1.25rem;
+    }
+
+    /* Hide Admin link text on very small screens */
+    nav a[href="login-admin.html"] {
+        padding: 0.5rem;
+    }
+
+    nav a[href="login-admin.html"] i {
+        margin-right: 0;
+    }
+
+    /* Form Inputs */
+    .form-input,
+    .form-select,
+    .form-textarea {
+        padding: 0.625rem 0.875rem;
+        font-size: 0.875rem;
+    }
+
+    /* Recommended Clubs Grid */
+    #recommended-clubs {
+        grid-template-columns: 1fr !important;
     }
 }
 
@@ -169,10 +285,91 @@ RESPONSIVE DESIGN
         padding-top: 2rem;
         padding-bottom: 2rem;
     }
-    
+
     /* Modal height adjustment */
-    #registration-modal .bg-white,
-    #login-modal .bg-white {
+    #registration-modal > div,
+    #login-modal > div,
+    #club-modal > div,
+    #activity-modal > div {
         max-height: 85vh;
+    }
+
+    /* Hero Section */
+    .gradient-bg .py-20 {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+}
+
+/* Print Styles */
+@media print {
+    /* Hide interactive elements */
+    nav,
+    button,
+    .modal-overlay,
+    .filter-btn,
+    #auth-section,
+    footer {
+        display: none !important;
+    }
+
+    /* Show all pages */
+    .page {
+        display: block !important;
+    }
+
+    /* Reset backgrounds */
+    .gradient-bg {
+        background: white !important;
+        color: black !important;
+    }
+
+    /* Card styles for print */
+    .club-card,
+    .activity-card {
+        border: 1px solid #ccc;
+        box-shadow: none;
+        page-break-inside: avoid;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .gradient-bg {
+        background: #1a1a1a;
+    }
+
+    .club-card,
+    .activity-card,
+    .stats-card {
+        border-width: 2px;
+    }
+
+    .btn-primary {
+        background: #4F46E5;
+    }
+
+    .text-gray-600 {
+        color: #374151 !important;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .card-hover:hover,
+    .club-card:hover,
+    .activity-card:hover {
+        transform: none;
+    }
+
+    .ai-glow {
+        animation: none;
     }
 }

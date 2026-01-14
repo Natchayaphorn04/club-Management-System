@@ -12,11 +12,15 @@ const AdminRegistrations = {
      * Load registrations
      */
     loadRegistrations() {
-        console.log('📋 Loading registrations...');
-        
-        // สร้างข้อมูลจำลองผู้สมัคร
-        this.registrations = this.generateMockRegistrations();
-        
+        console.log('📋 Loading registrations from localStorage...');
+
+        // โหลดข้อมูลจริงจาก localStorage
+        const storedRegistrations = JSON.parse(
+            localStorage.getItem('activity_registrations')
+        ) || [];
+
+        this.registrations = storedRegistrations;
+
         this.renderRegistrationsTable();
         this.renderActivityFilter();
     },
@@ -152,8 +156,9 @@ const AdminRegistrations = {
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ชื่อ-นามสกุล</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">รหัสนักศึกษา</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">เบอร์โทร</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">สถานะ</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">วันที่สมัคร</th>
-                            ${admin.role === 'admin' ? '<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">การดำเนินการ</th>' : ''}
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">การดำเนินการ</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -231,7 +236,6 @@ const AdminRegistrations = {
      * Render registration row
      */
     renderRegistrationRow(registration, index) {
-        const admin = AdminAuth.getCurrentAdmin();
         const regDate = new Date(registration.registeredAt);
         const formattedDate = regDate.toLocaleDateString('th-TH', {
             year: 'numeric',
@@ -240,6 +244,14 @@ const AdminRegistrations = {
             hour: '2-digit',
             minute: '2-digit'
         });
+
+        // กำหนดสถานะและสีของ badge
+        const statusConfig = {
+            'pending': { text: 'รอยืนยัน', class: 'bg-yellow-100 text-yellow-800' },
+            'confirmed': { text: 'ยืนยันแล้ว', class: 'bg-green-100 text-green-800' },
+            'cancelled': { text: 'ยกเลิก', class: 'bg-red-100 text-red-800' }
+        };
+        const status = statusConfig[registration.status] || statusConfig.pending;
 
         return `
             <tr class="hover:bg-gray-50">
@@ -252,27 +264,53 @@ const AdminRegistrations = {
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <div class="text-sm font-medium text-gray-900">${registration.fullName}</div>
-                    <div class="text-sm text-gray-500">${registration.email}</div>
+                    <div class="text-sm text-gray-500">${registration.email || '-'}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     ${registration.studentId}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    ${registration.phone}
+                    ${registration.phone || '-'}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium ${status.class}">
+                        ${status.text}
+                    </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     ${formattedDate}
                 </td>
-                ${admin.role === 'admin' ? `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <button onclick="AdminRegistrations.deleteRegistration(${registration.id})" 
-                                class="text-red-600 hover:text-red-900">
-                            <i class="fas fa-trash"></i>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    ${registration.status === 'pending' ? `
+                        <button onclick="AdminRegistrations.confirmRegistration(${registration.id})"
+                                class="text-green-600 hover:text-green-900" title="ยืนยัน">
+                            <i class="fas fa-check"></i>
                         </button>
-                    </td>
-                ` : ''}
+                    ` : ''}
+                    <button onclick="AdminRegistrations.deleteRegistration(${registration.id})"
+                            class="text-red-600 hover:text-red-900" title="ลบ">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
             </tr>
         `;
+    },
+
+    /**
+     * Confirm registration
+     */
+    confirmRegistration(registrationId) {
+        const index = this.registrations.findIndex(r => r.id === registrationId);
+        if (index !== -1) {
+            this.registrations[index].status = 'confirmed';
+            this.registrations[index].confirmedAt = new Date().toISOString();
+
+            // บันทึกลง localStorage
+            localStorage.setItem('activity_registrations', JSON.stringify(this.registrations));
+
+            showSuccess('ยืนยันการสมัครเรียบร้อยแล้ว');
+            this.renderRegistrationsTable();
+        }
     },
 
     /**
@@ -289,6 +327,10 @@ const AdminRegistrations = {
         const index = this.registrations.findIndex(r => r.id === registrationId);
         if (index !== -1) {
             this.registrations.splice(index, 1);
+
+            // บันทึกลง localStorage
+            localStorage.setItem('activity_registrations', JSON.stringify(this.registrations));
+
             showSuccess('ลบข้อมูลผู้สมัครเรียบร้อยแล้ว');
             this.renderRegistrationsTable();
         }

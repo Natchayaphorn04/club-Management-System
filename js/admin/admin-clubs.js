@@ -73,10 +73,7 @@ const AdminClubs = {
         return `
             <tr class="hover:bg-gray-50">
                 <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                        <div class="text-3xl mr-3">${Helpers.getClubIcon(club.category)}</div>
-                        <div class="text-sm font-medium text-gray-900">${club.name}</div>
-                    </div>
+                    <div class="text-sm font-medium text-gray-900">${club.name}</div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
@@ -282,6 +279,7 @@ const AdminClubs = {
             const newClub = {
                 id: Date.now(),
                 ...formData,
+                type: 'central',
                 logo: `https://via.placeholder.com/150?text=${encodeURIComponent(formData.name)}`,
                 pastActivities: [],
                 createdAt: new Date().toISOString()
@@ -290,6 +288,9 @@ const AdminClubs = {
             clubsData.push(newClub);
             showSuccess('เพิ่มชมรมเรียบร้อยแล้ว');
         }
+
+        // บันทึกลง localStorage
+        localStorage.setItem('clubs_data', JSON.stringify(clubsData));
 
         closeModal('club-modal');
         this.renderClubsTable();
@@ -313,6 +314,10 @@ const AdminClubs = {
             if (dataIndex !== -1) {
                 clubsData.splice(dataIndex, 1);
             }
+
+            // บันทึกลง localStorage
+            localStorage.setItem('clubs_data', JSON.stringify(clubsData));
+
             showSuccess('ลบชมรมเรียบร้อยแล้ว');
             this.renderClubsTable();
         }
